@@ -37,6 +37,8 @@ RUN yarn install
 # Copy the whole app to the image.
 COPY . .
 
+RUN rails db:migrate
+
 # Inform Docker that the container listens on the specified network ports at runtime.
 EXPOSE 3000
 
