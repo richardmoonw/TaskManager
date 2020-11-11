@@ -5,9 +5,21 @@ FROM ruby:2.6.6
 RUN mkdir /task_manager
 WORKDIR /task_manager
 
-# Update apt-get and install yarn through it.
-RUN apt-get update -qq
-RUN apt-get install -y yarn
+# Install Node.js from apt-get
+RUN apt-get update 
+RUN apt-get -y install nodejs npm
+
+# Remove cmdtest and yarn if they exist:
+# When yarn is installed thorugh apt-get, it is not really installed. 
+# Instead of that, cmdtest is obtained, so if we try to use yarn after this,
+# it won't work. 
+RUN apt remove cmdtest
+RUN apt remove yarn
+
+# Install a clean version of yarn without cmdtest.
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get -y install yarn
 
 # Copy the Gemfile and the Gemfile.lock from the current directory to the image.
 COPY Gemfile .
@@ -18,8 +30,9 @@ COPY package.json .
 
 # Install all the gems.
 RUN bundle install
-RUN yarn check --integrity
-RUN yarn install --check-files
+
+# Install all the node packages.
+RUN yarn install
 
 # Copy the whole app to the image.
 COPY . .
