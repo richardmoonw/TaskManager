@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, TextField, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import Logo from './forkie.png';
-import background from './background.jpg'
+import Logo from 'images/forkie.png';
+import background from 'images/background.jpg'
 
 const LoginButton = styled(Button)({
   width: "100%",
