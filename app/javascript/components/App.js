@@ -21,6 +21,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        // Verify if the user is already logged in
         this.checkLoginStatus();
     }
 
@@ -46,6 +47,7 @@ class App extends React.Component {
             })
     }
 
+    // Change the state status once a user has logged in.
     handleLogin(data) {
         this.setState({
             loggedInStatus: "LOGGED_IN",
@@ -53,6 +55,7 @@ class App extends React.Component {
         })
     }
 
+    // Change the state status once a user has logged out.
     handleLogout() {
         this.setState({
             loggedInStatus: 'NOT_LOGGED_IN',
@@ -63,22 +66,47 @@ class App extends React.Component {
     render() {
         return(
             <Switch>
+
+                {/* Home Screen */}
                 <Route 
                     exact 
                     path="/"
                     render={props => (
                         <Home {...props} 
+                            loggedInStatus={this.state.loggedInStatus} />
+                    )} 
+                />
+
+                {/* Sign up Screen */}
+                <Route 
+                    exact 
+                    path='/signup' 
+                    render={props => (
+                        <SignUp {...props} 
                             loggedInStatus={this.state.loggedInStatus}
-                            handleLogin={this.handleLogin} 
-                            handleLogout={this.handleLogout} />
-                    )} />
-                <Route exact path='/signup' component={SignUp} />
-                <Route exact path='/login' component={Login} />
+                            handleLogin={this.handleLogin} />
+                    )} 
+                />
+
+                {/* Login Screen */}
+                <Route 
+                    exact 
+                    path='/login' 
+                    render={props => (
+                        <Login {...props}
+                            loggedInStatus={this.state.loggedInStatus}
+                            handleLogin={this.handleLogin} />
+                    )} 
+                />
+
+                {/* Projects Screen */}
                 <Route 
                     exact 
                     path='/projects' 
                     render={props => (
-                        <Dashboard {...props} loggedInStatus={this.state.loggedInStatus} />
+                        <Dashboard {...props} 
+                            loggedInStatus={this.state.loggedInStatus}
+                            handleLogout={this.handleLogout} />
                     )} />
             </Switch>
         )
