@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, TextField } from '@material-ui/core';
 import Logo from 'images/forkie.png';
 import axios from 'axios';
@@ -12,7 +13,8 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      login_errors: ''
+      not_user_err: false,
+      invalid_password_err: false 
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,14 +50,31 @@ class Login extends React.Component {
       .post("http://localhost:3000/api/v1/sessions", new_session, { withCredentials: true })
       .then(response => {
         if (response.data.logged_in === true) {
+          this.setState({
+            not_user_err: false,
+            invalid_password_err: false
+          });
           this.handleSuccessfulAuth(response.data); 
         }
       })
       .catch(error => {
-        console.log(error);
+        switch(error.response.status) {
+          case 404:
+            this.setState({
+              not_user_err: true,
+              invalid_password_err: false
+            });
+            break;
+          case 422:
+            this.setState({
+              invalid_password_err: true,
+              not_user_err: false
+            });
+        }
       })
   }
 
+  // Function used to update a given state value, everytime its TextField has been modified.
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -92,6 +111,8 @@ class Login extends React.Component {
           <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
             <Grid item xs={6}>
               <TextField 
+                error={this.state.not_user_err}
+                helperText={this.state.not_user_err && "This email does not have any linked account"}
                 style={styles.textField} 
                 name="email" 
                 label="Enter your email" 
@@ -100,6 +121,8 @@ class Login extends React.Component {
             </Grid>
             <Grid item xs={6}>
               <TextField 
+                error={this.state.invalid_password_err}
+                helperText={this.state.invalid_password_err && "The password is not correct"}
                 style={styles.textField} 
                 name="password" 
                 type="password" 
@@ -116,7 +139,9 @@ class Login extends React.Component {
             <a style={styles.forgottenText} href="">Forgot your password?</a>
           </Grid>
           <Grid style={styles.signupContainer} item xs={12}>
-            <a style={styles.signupText} href="">Don't have an account? Register here</a>
+            <Link to="/signup" style={styles.link}>
+              <span style={styles.accountText}><strong>Don't have an account? Register here</strong></span>
+            </Link>
           </Grid>
           
         </Grid>

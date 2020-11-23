@@ -3,6 +3,7 @@ import { Grid, TextField } from '@material-ui/core';
 import axios from 'axios';
 import logo from 'images/forkie.png';
 import { styles, SubmitButton } from './styles';
+import { Link } from 'react-router-dom';
 
 class SignUp extends React.Component {
 
@@ -130,7 +131,9 @@ class SignUp extends React.Component {
                         </form>
 
                         <Grid style={styles.logContainer} item xs={12}>
-                            <a style={styles.loginText} href=""><strong>Do you already have an account? Log in here</strong></a>
+                            <Link to="/login" style={styles.link}>
+                                <span style={styles.accountText}><strong>Do you already have an account? Log in here</strong></span>
+                            </Link>
                         </Grid>
                     </Grid>
                 </Grid>

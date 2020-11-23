@@ -29,8 +29,9 @@ const styles = {
         marginTop: "3rem"
     },
 
-    loginText: {
+    accountText: {
         color: "black",
+        fontFamily: "Arial",
         textDecoration: "none",
         paddingBottom: "0.25rem",
         borderBottom: "0.005rem dotted lightgray"
@@ -47,18 +48,16 @@ const styles = {
     
     forgottenText: {
         color: "#a1a1a1",
+        fontFamily: "Arial",
         textDecoration: "none"
     },
     
     signupContainer: {
         marginTop: "0.8rem"
     },
-    
-    signupText: {
-        color: "black",
-        textDecoration: "none",
-        paddingBottom: "0.25rem",
-        borderBottom: "0.005rem dotted lightgray"
+
+    link: {
+        textDecoration: "none"
     }
 }
 
