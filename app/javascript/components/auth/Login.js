@@ -3,6 +3,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Logo from 'images/forkie.png';
 import background from 'images/background.jpg'
+import axios from 'axios';
 
 const LoginButton = styled(Button)({
   width: "100%",
@@ -60,6 +61,49 @@ const styles = {
 }
 
 class Login extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+      login_errors: ''
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    const new_session = {
+      user: {
+        email: this.state.email,
+        password: this.state.password
+      }
+    }
+    
+    axios
+      .post("http://localhost:3000/api/v1/sessions", new_session, { withCredentials: true })
+      .then(response => {
+        if (response.data.logged_in === true) {
+          this.props.handleSuccessfulAuth(response.data); 
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+
   render () {
     return (
       <>
@@ -81,15 +125,26 @@ class Login extends React.Component {
           </Grid> 
 
           {/* Login form */}
-          <form noValidate autoComplete="off">
+          <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
             <Grid item xs={6}>
-              <TextField style={styles.textField} id="email" label="Enter your email" variant="outlined"/>
+              <TextField 
+                style={styles.textField} 
+                name="email" 
+                label="Enter your email" 
+                onChange={this.handleChange}
+                variant="outlined"/>
             </Grid>
             <Grid item xs={6}>
-              <TextField style={styles.textField} id="email" type="password" label="Enter your password" variant="outlined"/>
+              <TextField 
+                style={styles.textField} 
+                name="password" 
+                type="password" 
+                label="Enter your password" 
+                onChange={this.handleChange}
+                variant="outlined"/>
             </Grid>
             <Grid item xs={6}>
-              <LoginButton><strong>LOG IN</strong></LoginButton>
+              <LoginButton type='submit'><strong>LOG IN</strong></LoginButton>
             </Grid>
           </form>
 
