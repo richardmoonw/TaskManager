@@ -122,7 +122,7 @@ class Login extends React.Component {
             <Grid item xs={6}>
               <TextField 
                 error={this.state.invalid_password_err}
-                helperText={this.state.invalid_password_err && "The password is not correct"}
+                helperText={this.state.invalid_password_err && "Wrong password"}
                 style={styles.textField} 
                 name="password" 
                 type="password" 

@@ -14,12 +14,17 @@ class SignUp extends React.Component {
             email: "",
             password: "",
             password_confirmation: "",
-            registration_errors: ""
+            email_invalid: false,
+            password_invalid: false,
+            email_err: "",
+            password_err: ""
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
+        this.validatePassword = this.validatePassword.bind(this);
     }
 
     componentDidMount() {
@@ -37,26 +42,39 @@ class SignUp extends React.Component {
     }
 
     // Function used to handle the request to sign up.
-    handleSubmit = (event) => {
-        const new_user = {
-            user: {
-                email: this.state.email,
-                password: this.state.password,
-                password_confirmation: this.state.password_confirmation
-            }
-        }
-        axios
-            .post("http://localhost:3000/api/v1/registrations", new_user, { withCredentials: true })
-            .then(response => {
-                if (response.data.status === 'created') {
-                    this.handleSuccessfulAuth(response.data);
-                }
-            })
-            .catch(error => {
-                console.log("Registration error ", error);
-            });
-
+    async handleSubmit(event) {
         event.preventDefault();
+        
+        // Wait until both validations have finished
+        await this.validateEmail();
+        await this.validatePassword();
+
+        // If email and passwords are valid
+        if (this.state.email_invalid === false && 
+            this.state.password_invalid === false){
+            const new_user = {
+                user: {
+                    email: this.state.email,
+                    password: this.state.password,
+                    password_confirmation: this.state.password_confirmation
+                }
+            }
+            axios
+                .post("http://localhost:3000/api/v1/registrations", new_user, { withCredentials: true })
+                .then(response => {
+                    if (response.data.status === 'created') {
+                        this.handleSuccessfulAuth(response.data);
+                    }
+                })
+                .catch(error => {
+                    this.setState({
+                        email_invalid: true,
+                        email_err: "The email you entered is already in use",
+                        password_invalid: false,
+                        password_err: ""
+                    });
+                });
+        }
     };
 
     // Function used to update a given state value, everytime its TextField has been modified.
@@ -69,6 +87,47 @@ class SignUp extends React.Component {
     handleSuccessfulAuth(data) {
         this.props.handleLogin(data);
         this.props.history.push("/projects");
+    }
+
+    // Function used to validate if the email entered has a correct format.
+    async validateEmail() {
+        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/.test(this.state.email)) {
+            this.setState({
+                email_invalid: false,
+                email_err: ""
+            })
+        }
+        else {
+            this.setState({
+                email_invalid: true,
+                email_err: "Please enter a valid email"
+            })
+        }
+    }  
+
+
+    // Function used to validate if both passwords match and if they include both lower and
+    // upper case characters, include at least one number and are at least 9 characters long.
+    async validatePassword() {
+        if(this.state.password != this.state.password_confirmation) {
+            this.setState({
+                password_invalid: true,
+                password_err: "The passwords do not match"
+            })
+        } else {
+            if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(this.state.password)) {
+                this.setState({
+                    password_invalid: false,
+                    password_err: ""
+                })
+            } else {
+                this.setState({
+                    password_invalid: true,
+                    password_err: "Your password needs to include both lower and upper case characters, \
+                                    include at least one number and be at least 8 characters long"
+                })
+            }
+        }
     }
 
     render() {
@@ -95,6 +154,8 @@ class SignUp extends React.Component {
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
                             <Grid item xs={6}>
                                 <TextField 
+                                    error={this.state.email_invalid}
+                                    helperText={this.state.email_invalid && this.state.email_err}
                                     style={styles.textField} 
                                     name="email"
                                     label="Enter your email" 
@@ -105,6 +166,8 @@ class SignUp extends React.Component {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField 
+                                    error={this.state.password_invalid}
+                                    helperText={this.state.password_invalid && this.state.password_err}
                                     style={styles.textField} 
                                     name="password"
                                     type="password" 
@@ -116,6 +179,8 @@ class SignUp extends React.Component {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField 
+                                    error={this.state.password_invalid}
+                                    helperText={this.state.password_invalid && this.state.password_err}
                                     style={styles.textField} 
                                     name="password_confirmation"
                                     type="password" 
