@@ -4,7 +4,7 @@ import { Grid, TextField } from '@material-ui/core';
 import Logo from 'images/forkie.png';
 import axios from 'axios';
 import { styles, SubmitButton } from './styles'
-import { URL } from './GlobalVariables';
+import { URL } from '../GlobalVariables';
 
 class Login extends React.Component {
 

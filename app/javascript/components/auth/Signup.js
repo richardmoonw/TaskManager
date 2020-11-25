@@ -4,7 +4,7 @@ import axios from 'axios';
 import logo from 'images/forkie.png';
 import { styles, SubmitButton } from './styles';
 import { Link } from 'react-router-dom';
-import { URL } from './GlobalVariables';
+import { URL } from '../GlobalVariables';
 
 class SignUp extends React.Component {
 

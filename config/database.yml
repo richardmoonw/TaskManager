@@ -1,12 +1,11 @@
-# SQLite. Versions 3.8.0 and up are supported.
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
 default: &default
   adapter: postgresql
   encoding: unicode
+  # DEV VARIABLES
+  # host: db
+  # username: postgres
+  # password: unva23azu38
+  # PRODUCTION VARIABLES
   host: ec2-100-25-231-126.compute-1.amazonaws.com
   username: qgppckwqgntipt
   password: 36c32ce5ac7e11f5c3936dbc175234578c3156cd7855dc26314427661d3eed69

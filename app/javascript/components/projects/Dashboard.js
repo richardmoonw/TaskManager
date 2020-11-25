@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { URL } from './GlobalVariables'; 
+import { URL } from '../GlobalVariables'; 
 
 class Dashboard extends React.Component {
 
