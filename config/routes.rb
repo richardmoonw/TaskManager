@@ -1,6 +1,19 @@
 Rails.application.routes.draw do
   root to: 'tasks#index'
-  devise_for :users
-  get '/tasks', to: 'tasks#index'
+
+  namespace :api do
+    namespace :v1 do
+      resources :sessions, only: [:create]
+      resources :registrations, only: [:create]
+      delete :logout, to: "sessions#logout"
+      get :logged_in, to: "sessions#logged_in"
+      root to: 'tasks#index'
+      # resources :users, param: :email
+      # resources :projects, only: [:create, :destroy]
+    end
+  end
+
+  get '*path', to: 'tasks#index', via: :all
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

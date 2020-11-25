@@ -37,14 +37,17 @@ RUN yarn install
 # Copy the whole app to the image.
 COPY . .
 
-# Run all the corresponding migrations.
-RUN rails db:migrate RAILS_ENV=development
-
-# Install webpacker if required.
-RUN bundle exec rails webpacker:install
-
 # Inform Docker that the container listens on the specified network ports at runtime.
 EXPOSE 3000
 
 # Start the main process.
 CMD ["rails", "server"]
+
+
+# # Run all the corresponding migrations.
+# RUN rails db:migrate RAILS_ENV=development
+
+# # Install react.
+# RUN bundle exec rails webpacker:install
+# RUN bundle exec rails webpacker:install:react
+# RUN rails generate react:install
