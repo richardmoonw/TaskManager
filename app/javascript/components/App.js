@@ -27,7 +27,7 @@ class App extends React.Component {
 
     checkLoginStatus() {
         axios
-            .get("http://localhost:3000/api/v1/logged_in", { withCredentials: true })
+            .get("https://forkie.heroku.com:3000/api/v1/logged_in", { withCredentials: true })
             .then(response => {
                 if (response.data.logged_in === true && this.state.loggedInStatus === 'NOT_LOGGED_IN') {
                     this.setState({

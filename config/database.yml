@@ -7,9 +7,9 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: db
-  username: postgres
-  password: unva23azu38
+  host: ec2-100-25-231-126.compute-1.amazonaws.com
+  username: qgppckwqgntipt
+  password: 36c32ce5ac7e11f5c3936dbc175234578c3156cd7855dc26314427661d3eed69
   pool: 5
 
 development:

@@ -11,7 +11,7 @@ class Dashboard extends React.Component {
 
     handleLogoutClick() {
         axios
-            .delete("http://localhost:3000/api/v1/logout", { withCredentials: true })
+            .delete("https://forkie.heroku.com:3000/api/v1/logout", { withCredentials: true })
             .then(response => {
                 this.props.handleLogout();
                 this.props.history.push("/");

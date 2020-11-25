@@ -60,7 +60,7 @@ class SignUp extends React.Component {
                 }
             }
             axios
-                .post("http://localhost:3000/api/v1/registrations", new_user, { withCredentials: true })
+                .post("https://forkie.heroku.com:3000/api/v1/registrations", new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
                         this.handleSuccessfulAuth(response.data);
