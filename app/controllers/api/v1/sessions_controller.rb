@@ -5,7 +5,12 @@ module Api
             def create
                 user = User
                         .find_by(email: params["user"]["email"])
-                        .try(:authenticate, params["user"]["password"])
+
+                        if not user 
+                            return head 404
+                        else 
+                            user = user.try(:authenticate, params["user"]["password"])
+                        end
                 
                 if user 
                     session[:user_id] = user.id
@@ -15,7 +20,7 @@ module Api
                         user: user
                     }
                 else
-                    render json: { status: 401 } 
+                    return head 422
                 end
             end
 

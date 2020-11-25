@@ -15,7 +15,7 @@ module Api
                         user: user
                     }
                 else 
-                    render json: { status: 500 }
+                    return head 500
                 end
             end
         end
