@@ -5,6 +5,7 @@ import Home from './Home';
 import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
+import { URL } from './GlobalVariables';
 
 class App extends React.Component {
 
@@ -27,7 +28,7 @@ class App extends React.Component {
 
     checkLoginStatus() {
         axios
-            .get("https://forkie.heroku.com:3000/api/v1/logged_in", { withCredentials: true })
+            .get(`${URL}/api/v1/logged_in`, { withCredentials: true })
             .then(response => {
                 if (response.data.logged_in === true && this.state.loggedInStatus === 'NOT_LOGGED_IN') {
                     this.setState({

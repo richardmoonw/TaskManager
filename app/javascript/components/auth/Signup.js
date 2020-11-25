@@ -4,6 +4,7 @@ import axios from 'axios';
 import logo from 'images/forkie.png';
 import { styles, SubmitButton } from './styles';
 import { Link } from 'react-router-dom';
+import { URL } from './GlobalVariables';
 
 class SignUp extends React.Component {
 
@@ -60,7 +61,7 @@ class SignUp extends React.Component {
                 }
             }
             axios
-                .post("https://forkie.heroku.com:3000/api/v1/registrations", new_user, { withCredentials: true })
+                .post(`${URL}/api/v1/registrations`, new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
                         this.handleSuccessfulAuth(response.data);

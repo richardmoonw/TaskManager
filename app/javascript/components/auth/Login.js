@@ -4,6 +4,7 @@ import { Grid, TextField } from '@material-ui/core';
 import Logo from 'images/forkie.png';
 import axios from 'axios';
 import { styles, SubmitButton } from './styles'
+import { URL } from './GlobalVariables';
 
 class Login extends React.Component {
 
@@ -47,7 +48,7 @@ class Login extends React.Component {
     }
     
     axios
-      .post("https://forkie.heroku.com:3000/api/v1/sessions", new_session, { withCredentials: true })
+      .post(`${URL}/api/v1/sessions`, new_session, { withCredentials: true })
       .then(response => {
         if (response.data.logged_in === true) {
           this.setState({

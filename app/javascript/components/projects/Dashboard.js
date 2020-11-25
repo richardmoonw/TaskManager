@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios';  
+import axios from 'axios';
+import { URL } from './GlobalVariables'; 
 
 class Dashboard extends React.Component {
 
@@ -11,7 +12,7 @@ class Dashboard extends React.Component {
 
     handleLogoutClick() {
         axios
-            .delete("https://forkie.heroku.com:3000/api/v1/logout", { withCredentials: true })
+            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
             .then(response => {
                 this.props.handleLogout();
                 this.props.history.push("/");
