@@ -13,11 +13,11 @@ module Api
             end
             def create
                 @project = Project.new(project_params)
-                # params[:employee_ids].each do |employee|
+                params[:employee_ids].each do |employee|
 
-                #     @project.teams.build(:employee_id => employee)
+                    @project.teams.build(:employee_id => employee)
                     
-                #   end
+                  end
                 if @project.save
                     render json: @project
                 else
