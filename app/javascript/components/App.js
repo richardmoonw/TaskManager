@@ -6,6 +6,7 @@ import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
 import { URL } from './GlobalVariables';
+import TicketsBoard from './tickets_components/TicketsBoard'
 
 class App extends React.Component {
 
@@ -109,6 +110,17 @@ class App extends React.Component {
                             loggedInStatus={this.state.loggedInStatus}
                             handleLogout={this.handleLogout} />
                     )} />
+                <Route
+                    exact
+                    path='/ticketsboard'
+                    render={props =>(     
+                        <TicketsBoard {...props}
+                        loggedInStatus={this.state.loggedInStatus}
+                        handleLogout={this.handleLogout} />
+                        
+                    )}/>
+                
+
             </Switch>
         )
     }

@@ -10,10 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_22_194053) do
+ActiveRecord::Schema.define(version: 2020_11_25_231957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.string "comment"
+    t.string "commenter"
+    t.bigint "ticket_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ticket_id"], name: "index_comments_on_ticket_id"
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "name"
+    t.string "role"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "employee_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_teams_on_employee_id"
+    t.index ["project_id"], name: "index_teams_on_project_id"
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "priority"
+    t.string "status"
+    t.bigint "reporter"
+    t.bigint "assignee"
+    t.bigint "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_tickets_on_project_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
@@ -22,4 +67,8 @@ ActiveRecord::Schema.define(version: 2020_11_22_194053) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "comments", "tickets"
+  add_foreign_key "teams", "employees"
+  add_foreign_key "teams", "projects"
+  add_foreign_key "tickets", "projects"
 end
