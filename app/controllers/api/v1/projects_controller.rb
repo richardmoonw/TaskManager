@@ -1,6 +1,8 @@
 module Api
     module V1
         class ProjectsController < ApplicationController
+            include CurrentUserConcern
+            before_action :require_login
             protect_from_forgery with: :null_session
             before_action :find_project, only: [:show, :update, :destroy]
             def index
@@ -47,6 +49,11 @@ module Api
             end
             def find_project
                 @project = Project.find(params[:id])
+            end
+            def require_login
+                unless @current_user
+                    return head 401
+                end
             end
         end
     end

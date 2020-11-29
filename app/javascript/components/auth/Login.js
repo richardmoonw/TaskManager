@@ -24,16 +24,16 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-      // If the user is already logged in, redirect them to the projects screen.
+      // If the user is already logged in, redirect them to the profile screen.
       if (this.props.loggedInStatus === 'LOGGED_IN') {
-          this.props.history.push("/projects")
+          this.props.history.push("/profile")
       }
   }
 
   componentDidUpdate() {
-    // If the user is already logged in, redirect them to the projects screen.
+    // If the user is already logged in, redirect them to the profile screen.
     if (this.props.loggedInStatus === 'LOGGED_IN') {
-        this.props.history.push("/projects")
+        this.props.history.push("/profile")
     }
   }
 
@@ -84,7 +84,7 @@ class Login extends React.Component {
 
   handleSuccessfulAuth(data) {
     this.props.handleLogin(data);
-    this.props.history.push("/projects");
+    this.props.history.push("/profile");
   }
 
 
