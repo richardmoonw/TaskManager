@@ -29,6 +29,12 @@ module Api
             def update
                 if @project
                     @project.update(project_params)
+                    @project.teams.delete_all
+                    params[:employee_ids].each do |employee|
+
+                        @project.teams.create(:employee_id => employee)
+                        
+                    end
                     render json: {message: 'Project successfully updated'}, status: 200
                 else
                     render error:{ error: 'Unable to update project.'}, status: 400
