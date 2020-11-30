@@ -3,6 +3,8 @@ import background from 'images/background.jpg';
 import { styled } from '@material-ui/core/styles';
 
 const styles = {
+
+    // Authentication screens Styles
     backgroundImg: {
         width: "100%",
         height: "104vh",
@@ -58,9 +60,10 @@ const styles = {
 
     link: {
         textDecoration: "none"
-    }
+    },
 }
 
+// Authentication Styled Components
 const SubmitButton = styled(Button)({
     width: "100%",
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -70,8 +73,7 @@ const SubmitButton = styled(Button)({
     color: 'white',
     height: 48,
     padding: '0 30px'
-  });
-  
+});
 
 export {
     styles,

@@ -11,16 +11,16 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        // If the user is already logged in, redirect them to the projects screen.
+        // If the user is already logged in, redirect them to the profile screen.
         if (this.props.loggedInStatus === 'LOGGED_IN') {
-            this.props.history.push("/projects")
+            this.props.history.push("/profile")
         }
     }
 
     componentDidUpdate() {
-        // If the user is already logged in, redirect them to the projects screen.
+        // If the user is already logged in, redirect them to the profile screen.
         if (this.props.loggedInStatus === 'LOGGED_IN') {
-            this.props.history.push("/projects")
+            this.props.history.push("/profile")
         }
     }
 
@@ -69,7 +69,7 @@ class Home extends React.Component {
 
                         {/* Login button */}
                         <Grid item xs={2}></Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4}>
                             <Link to="/login" style={styles.link}>
                                 <LoginTooltip title=''>
                                     <Button><strong>LOGIN</strong></Button>
@@ -78,7 +78,7 @@ class Home extends React.Component {
                         </Grid>
                     
                         {/* Sign up button */}
-                        <Grid item xs={5}>
+                        <Grid item xs={6}>
                             <Link to="/signup" style={styles.link}>
                                 <TopSignUpButton><strong>GET STARTED</strong></TopSignUpButton>
                             </Link>

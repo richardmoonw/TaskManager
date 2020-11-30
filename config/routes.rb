@@ -13,8 +13,6 @@ Rails.application.routes.draw do
       delete :logout, to: "sessions#logout"
       get :logged_in, to: "sessions#logged_in"
       root to: 'tasks#index'
-      # resources :users, param: :email
-      # resources :projects, only: [:create, :destroy]
     end
   end
 
