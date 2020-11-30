@@ -1,35 +1,51 @@
 import React from 'react';
-import axios from 'axios';
-import { URL } from '../GlobalVariables'; 
+import './App.css'
+import ButtonAppBar from './appBar'
+import Projects from './projects'
+import { makeStyles } from '@material-ui/core/styles';
+import { Link, Typography } from '@material-ui/core';
 
-class Dashboard extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    }
-
-    handleLogoutClick() {
-        axios
-            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
-            .then(response => {
-                this.props.handleLogout();
-                this.props.history.push("/");
-            })
-            .catch(error => {
-                console.log("logout error", error);
-            })   
-    }
-
-    render() {
-        return(
-            <>
-            <h1>Status: {this.props.loggedInStatus}</h1>
-            <button onClick={this.handleLogoutClick}>Logout</button> 
-            </>
-        );
-    }
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Forkie
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
 
-export default Dashboard
+const useStyles = makeStyles((theme) => ({
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+  app:{
+    textAlign: "center"
+  }
+}));
+
+function Dashboard() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.app}>
+      <ButtonAppBar/>
+      <Projects/>
+      <footer className={classes.footer}>
+        <Typography variant="h6" align="center" gutterBottom>
+          Footer
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          Something here to give the footer a purpose!
+        </Typography>
+        <Copyright />
+      </footer>
+    </div>
+  );
+}
+
+export default Dashboard;
