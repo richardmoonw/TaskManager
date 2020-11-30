@@ -8,7 +8,7 @@ module Api
                 render json: @tickets
             end
             def show
-                render json: @ticket
+                render json: @ticket.to_json(include: :comments)
             end
             def create
                 @ticket = Ticket.new(ticket_params)
