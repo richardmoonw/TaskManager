@@ -1,6 +1,8 @@
 module Api
     module V1
         class ProjectsController < ApplicationController
+            include CurrentUserConcern
+            before_action :require_login
             protect_from_forgery with: :null_session
             before_action :find_project, only: [:show, :update, :destroy]
             def index
@@ -27,6 +29,12 @@ module Api
             def update
                 if @project
                     @project.update(project_params)
+                    @project.teams.delete_all
+                    params[:employee_ids].each do |employee|
+
+                        @project.teams.create(:employee_id => employee)
+                        
+                    end
                     render json: {message: 'Project successfully updated'}, status: 200
                 else
                     render error:{ error: 'Unable to update project.'}, status: 400
@@ -43,10 +51,15 @@ module Api
             private
             
             def project_params
-                params.require(:project).permit(:name,employee_ids:[])
+                params.require(:project).permit(:name,:description,employee_ids:[])
             end
             def find_project
                 @project = Project.find(params[:id])
+            end
+            def require_login
+                unless @current_user
+                    return head 401
+                end
             end
         end
     end

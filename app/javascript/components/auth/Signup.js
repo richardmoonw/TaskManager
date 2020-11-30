@@ -29,16 +29,16 @@ class SignUp extends React.Component {
     }
 
     componentDidMount() {
-        // If the user is already logged in, redirect them to the projects screen.
+        // If the user is already logged in, redirect them to the profile screen.
         if (this.props.loggedInStatus === 'LOGGED_IN') {
-            this.props.history.push("/projects")
+            this.props.history.push("/profile")
         }
     }
 
     componentDidUpdate() {
-        // If the user is already logged in, redirect them to the projects screen.
+        // If the user is already logged in, redirect them to the profile screen.
         if (this.props.loggedInStatus === 'LOGGED_IN') {
-            this.props.history.push("/projects")
+            this.props.history.push("/profile")
         }
     }
 
@@ -60,11 +60,28 @@ class SignUp extends React.Component {
                     password_confirmation: this.state.password_confirmation
                 }
             }
+
             axios
                 .post(`${URL}/api/v1/registrations`, new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
-                        this.handleSuccessfulAuth(response.data);
+                        let user_data = response.data
+                        let new_employee = {
+                            name: "",
+                            role: "",
+                            user_id: user_data.user.id
+                        }
+                        axios
+                            .post(`${URL}/api/v1/employees`, new_employee, { withCredentials: true })
+                            .then(response => {
+                                this.handleSuccessfulAuth(user_data);
+                            })
+                            .catch(error => {
+                                switch(error.response.status) {
+                                    case 400:
+                                        console.log("There was an error with your request");
+                                }
+                            })
                     }
                 })
                 .catch(error => {
@@ -87,7 +104,7 @@ class SignUp extends React.Component {
 
     handleSuccessfulAuth(data) {
         this.props.handleLogin(data);
-        this.props.history.push("/projects");
+        this.props.history.push("/profile");
     }
 
     // Function used to validate if the email entered has a correct format.

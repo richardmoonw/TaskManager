@@ -5,6 +5,7 @@ import Home from './Home';
 import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
+import Profile from './employee/Profile';
 import { URL } from './GlobalVariables';
 import TicketsBoard from './tickets_components/TicketsBoard'
 
@@ -55,6 +56,7 @@ class App extends React.Component {
             loggedInStatus: "LOGGED_IN",
             user: data.user
         })
+        console.log(this.state.user)
     }
 
     // Change the state status once a user has logged out.
@@ -101,18 +103,20 @@ class App extends React.Component {
                     )} 
                 />
 
-                {/* Projects Screen */}
+                {/* Profile Screen */}
                 <Route 
                     exact 
-                    path='/projects' 
+                    path='/profile' 
                     render={props => (
-                        <Dashboard {...props} 
+                        <Profile {...props} 
                             loggedInStatus={this.state.loggedInStatus}
-                            handleLogout={this.handleLogout} />
-                    )} />
+                            handleLogout={this.handleLogout}
+                            user={this.state.user} />
+                    )} 
+                />
                 <Route
                     exact
-                    path='/ticketsboard'
+                    path='/ticketsboard/:id'
                     render={props =>(     
                         <TicketsBoard {...props}
                         loggedInStatus={this.state.loggedInStatus}

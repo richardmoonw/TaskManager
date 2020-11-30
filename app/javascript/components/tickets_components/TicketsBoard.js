@@ -25,12 +25,12 @@ const null_employee = [
   ]
 
 
-function TicketsBoard() {
+function TicketsBoard({match}) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [project, setProject] = useState([])
     const [loaded, setLoaded] = useState(false)
-    const project_id = 1
+    const project_id = match.params.id
     const [backlogTickets, setBacklogTickets] = useState([])
     const [devTickets, setDevTickets] = useState([])
     const [progressTickets, setProgressTickets] = useState([])
@@ -39,7 +39,7 @@ function TicketsBoard() {
     const [flag, setFlag] = useState(false)
 
     useEffect(() => {
-        const url = `api/v1/projects/${project_id}`
+        const url = `/api/v1/projects/${project_id}`
         console.log(url)
         axios.get(url)
             .then(function (response) {
@@ -83,9 +83,6 @@ function TicketsBoard() {
 
 
             {loaded &&
-            //TODO each column should have all the tickets in one array
-            //Including tickets
-            //also pass all the way to the tickets and to the form the setters
                 <Grid container direction='row' justify="center" >
                     <Column col_title='Backlog' tickets={backlogTickets}  employees={employees}project_id={project_id}
                     flag ={flag}
@@ -110,6 +107,7 @@ function TicketsBoard() {
                 flag ={flag}
                 setFlag={setFlag}
             >
+
             </FormDialog>
         </Fragment>
     );

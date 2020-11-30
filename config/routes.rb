@@ -9,11 +9,10 @@ Rails.application.routes.draw do
       resources :employees
       resources :tickets
       resources :comments
+      resources :users
       delete :logout, to: "sessions#logout"
       get :logged_in, to: "sessions#logged_in"
       root to: 'tasks#index'
-      # resources :users, param: :email
-      # resources :projects, only: [:create, :destroy]
     end
   end
 

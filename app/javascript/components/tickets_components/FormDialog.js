@@ -111,7 +111,7 @@ export default function FormDialog(props) {
         
        
         
-        axios.post('api/v1/tickets',new_data)
+        axios.post('/api/v1/tickets',new_data)
         .then(function(response) {
             // console.log(response)
             props.setFlag(!props.flag)
