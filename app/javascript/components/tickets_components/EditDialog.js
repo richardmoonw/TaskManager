@@ -104,7 +104,7 @@ export default function EditDialog(props) {
         setOpen(false)
         axios({
             method: 'put',
-            url: `api/v1/tickets/${ticket.id}`,
+            url: `/api/v1/tickets/${ticket.id}`,
             data: {
                 title: title,
                 description: description,

@@ -22,9 +22,9 @@ module Api
             def update
                 if @employee
                     @employee.update(employee_params)
-                    render json: {message: 'Employee successfully updated'}, status: 200
+                    return 200
                 else
-                    render error:{ error: 'Unable to update employee.'}, status: 400
+                    return head 400
                 end
             end
             def destroy
@@ -38,7 +38,7 @@ module Api
             private
 
             def employee_params
-                params.require(:employee).permit(:name, :role,:user_id)
+                params.require(:employee).permit(:name, :role, :user_id)
             end
             def find_employee
                 @employee = Employee.find(params[:id])

@@ -61,17 +61,16 @@ class SignUp extends React.Component {
                 }
             }
 
-            const new_employee = {
-                name: "",
-                role: "",
-                email: this.state.email
-            }
-
             axios
                 .post(`${URL}/api/v1/registrations`, new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
                         let user_data = response.data
+                        let new_employee = {
+                            name: "",
+                            role: "",
+                            user_id: user_data.user.id
+                        }
                         axios
                             .post(`${URL}/api/v1/employees`, new_employee, { withCredentials: true })
                             .then(response => {
