@@ -51,7 +51,7 @@ module Api
             private
             
             def project_params
-                params.require(:project).permit(:name,employee_ids:[])
+                params.require(:project).permit(:name,:description,employee_ids:[])
             end
             def find_project
                 @project = Project.find(params[:id])
