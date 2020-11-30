@@ -1,10 +1,12 @@
 import React from 'react';
 import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
-import { styles, ProjectsButton } from './styles';
+import { styles, ProjectsButton } from '../styles';
 import Logo from 'images/forkie.png';
-import Profile from 'images/profile.png'
+import ProfileImg from 'images/profile.png'
+import { URL } from '../GlobalVariables'; 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountTree from '@material-ui/icons/AccountTree';
+import axios from 'axios';
 
 class Profile extends React.Component {
 
@@ -13,31 +15,38 @@ class Profile extends React.Component {
 
 		this.state ={
 			editProfile: false,
-			email: "A01561680@itesm.mx",
-			name: "Ricardo Luna",
-			role: "Project Manager"
+			id: "",
+			email: "",
+			name: "",
+			role: ""
 		}		
 
 		this.updateInfo = this.updateInfo.bind(this)
 		this.enableEditing = this.enableEditing.bind(this)
 		this.handleChange = this.handleChange.bind(this)
+		this.handleLogout = this.handleLogout.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
     }
     
     componentDidMount() {
-        console.log(this.props.loggedInStatus)
         // If the user is already logged in, redirect them to the profile screen.
         if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
             this.props.history.push("/");
-        }
+        } else {
+			axios.get(`${URL}/api/v1/users/${this.props.user.id}`, { withCredentials: true })
+				.then(response => {
+					let user_data = response.data
+					this.setState({
+						email: this.props.user.email,
+						id: user_data.employee.id,
+						name: user_data.employee.name,
+						role: user_data.employee.role
+					})
+				})
+		}
     }
 
-    componentDidUpdate() {
-        // If the user is already logged in, redirect them to the profile screen.
-        if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
-            this.props.history.push("/");
-        }
-    }
-
+	// Function used to handle the user information's updates.
 	updateInfo(event) {
 		event.preventDefault();
 		this.setState({
@@ -45,16 +54,45 @@ class Profile extends React.Component {
 		})
 	}
 
+	// Function triggered if the user decides to edit their profile or
+	// to stop doing it. 
 	enableEditing() {
 		this.setState({
 			editProfile: !this.state.editProfile
 		})
 	}
 
+	// Function used to update a given state value, everytime its TextField has been modified.
 	handleChange(event) {
 		this.setState({
 			[event.target.name]: event.target.value
 		})
+	}
+
+	handleLogout(event) {
+		axios
+            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
+            .then(response => {
+                this.props.handleLogout();
+                this.props.history.push("/");
+            })
+            .catch(error => {
+                console.log("logout error", error);
+            })   
+	}
+
+	handleSubmit() {
+		let updated_employee = {
+			name: this.state.name,
+			role: this.state.role
+		}
+		axios.put(`${URL}/api/v1/employees/${this.state.id}`, updated_employee, { withCredentials: true })
+			.then(response => {
+				return;
+			})
+			.catch(error => {
+				console.log("There was an error updating the info")
+			})
 	}
 
     render() {
@@ -89,6 +127,7 @@ class Profile extends React.Component {
 									color="secondary"
 									startIcon={<ExitToAppIcon />}
 									style={styles.navbarButtons}
+									onClick={this.handleLogout}
 								>
 									Sign out
 								</Button>
@@ -122,7 +161,7 @@ class Profile extends React.Component {
 
 							{/* Profile Photo */}
 							<Grid item xs={12}>
-								<img alt="Forkie" width="70%" src={Profile} style={styles.profilePhoto}/>
+								<img alt="Forkie" width="70%" src={ProfileImg} style={styles.profilePhoto}/>
 							</Grid>
 
 							{/* The information is not being edited */}
@@ -186,6 +225,7 @@ class Profile extends React.Component {
 													variant="contained" 
 													color="primary"
 													type="submit"
+													onClick={this.handleSubmit}
 												>UPDATE INFO</Button>
 											</Grid>
 										</form>	
