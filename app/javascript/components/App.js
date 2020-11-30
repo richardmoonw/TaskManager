@@ -5,6 +5,7 @@ import Home from './Home';
 import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
+import Profile from './employee/Profile';
 import { URL } from './GlobalVariables';
 import TicketsBoard from './tickets_components/TicketsBoard'
 
@@ -101,15 +102,16 @@ class App extends React.Component {
                     )} 
                 />
 
-                {/* Projects Screen */}
+                {/* Profile Screen */}
                 <Route 
                     exact 
-                    path='/projects' 
+                    path='/profile' 
                     render={props => (
-                        <Dashboard {...props} 
+                        <Profile {...props} 
                             loggedInStatus={this.state.loggedInStatus}
                             handleLogout={this.handleLogout} />
-                    )} />
+                    )} 
+                />
                 <Route
                     exact
                     path='/ticketsboard/:id'
