@@ -12,7 +12,7 @@ module Api
             end
             def create
                 @employee = Employee.new(employee_params)
-                
+               
                 if @employee.save
                     return head 200
                 else
@@ -38,7 +38,7 @@ module Api
             private
 
             def employee_params
-                params.require(:employee).permit(:name, :role, :email)
+                params.require(:employee).permit(:name, :role,:user_id)
             end
             def find_employee
                 @employee = Employee.find(params[:id])
