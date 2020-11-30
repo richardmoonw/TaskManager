@@ -37,7 +37,7 @@ module Api
             private
 
             def comment_params
-                params.require(:comment).permit(:comment,:commenter,:ticket_id)
+                params.require(:comment).permit(:comment,:employee_id,:ticket_id)
                 # params.require(:comment).permit(:comment,:commenter)
             end
             def find_comment

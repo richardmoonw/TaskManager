@@ -114,6 +114,8 @@ class App extends React.Component {
                             user={this.state.user} />
                     )} 
                 />
+
+                {/* Specific Project Screen */}
                 <Route
                     exact
                     path='/ticketsboard/:id'
@@ -121,8 +123,19 @@ class App extends React.Component {
                         <TicketsBoard {...props}
                         loggedInStatus={this.state.loggedInStatus}
                         handleLogout={this.handleLogout} />
-                        
-                    )}/>
+                    )}
+                />
+
+                {/* Projects Dashboard */}
+                <Route
+                    exact
+                    path='/projects'
+                    render={props =>(     
+                        <Dashboard {...props}
+                        loggedInStatus={this.state.loggedInStatus}
+                        handleLogout={this.handleLogout} />
+                    )}
+                />
                 
 
             </Switch>

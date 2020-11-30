@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
 import { styles, ProjectsButton } from '../styles';
 import Logo from 'images/forkie.png';
@@ -69,7 +70,7 @@ class Profile extends React.Component {
 		})
 	}
 
-	handleLogout(event) {
+	handleLogout() {
 		axios
             .delete(`${URL}/api/v1/logout`, { withCredentials: true })
             .then(response => {
@@ -114,14 +115,16 @@ class Profile extends React.Component {
 							</Grid>
 							<Grid item xs={7}></Grid>
 							<Grid item xs={3} style={styles.contentCentered}>
-								<ProjectsButton
-									variant="contained"
-									color="primary"
-									startIcon={<AccountTree />}
-									style={styles.navbarButtons}
-								>
-									Projects
-								</ProjectsButton>
+								<Link style={styles.link} to="/projects">
+									<ProjectsButton
+										variant="contained"
+										color="primary"
+										startIcon={<AccountTree />}
+										style={styles.navbarButtons}
+									>
+										Projects
+									</ProjectsButton>
+								</Link>
 								<Button
 									variant="contained"
 									color="secondary"

@@ -85,8 +85,8 @@ function TicketsBoard({match}) {
             {loaded &&
                 <Grid container direction='row' justify="center" >
                     <Column col_title='Backlog' tickets={backlogTickets}  employees={employees}project_id={project_id}
-                    flag ={flag}
-                    setFlag={setFlag}></Column>
+                        flag ={flag}
+                        setFlag={setFlag}></Column>
                     <Column col_title='Selected for development' tickets={devTickets} employees={employees}project_id={project_id}
                     flag ={flag}
                     setFlag={setFlag}></Column>

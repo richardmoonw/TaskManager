@@ -1,51 +1,47 @@
 import React from 'react';
 import './App.css'
-import ButtonAppBar from './appBar'
+import Navbar from '../Navbar'
 import Projects from './projects'
-import { makeStyles } from '@material-ui/core/styles';
-import { Link, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core'
+import { URL } from '../GlobalVariables';
+import axios from 'axios';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Forkie
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const useStyles = makeStyles((theme) => ({
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
-  app:{
-    textAlign: "center"
-  }
-}));
+class Dashboard extends React.Component {
+	
+	constructor(props){
+		super(props);
 
-function Dashboard() {
-  const classes = useStyles();
+		this.handleLogout = this.handleLogout.bind(this);
+	}
 
-  return (
-    <div className={classes.app}>
-      <ButtonAppBar/>
-      <Projects/>
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-    </div>
-  );
+	handleLogout() {
+		axios
+            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
+            .then(response => {
+                this.props.handleLogout();
+                this.props.history.push("/");
+            })
+            .catch(error => {
+                console.log("logout error", error);
+            })   
+	}
+
+	render() {
+		// const classes = useStyles();
+		return (
+			<>
+				<Navbar handleLogout={this.handleLogout}/>
+				<Grid container>
+					<Grid item xs={1}></Grid>
+					<Grid item xs={10}>
+						<Projects/>
+					</Grid>
+				</Grid>
+			</>
+	  	);
+	}
+  	
 }
 
 export default Dashboard;

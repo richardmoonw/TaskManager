@@ -40,7 +40,7 @@ export default function Column(props) {
                 <Grid item xs={12}>
                 {props.tickets.map(ticket => {
                             return(
-                                <Ticket key={ticket.id}ticket={ticket}employees={props.employees} project_id={props.project_id}
+                                <Ticket key={ticket.id} ticket={ticket} employees={props.employees} project_id={props.project_id}
                                 flag ={props.flag}
                                 setFlag={props.setFlag}/>
                             )
