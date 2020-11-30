@@ -112,7 +112,7 @@ class App extends React.Component {
                     )} />
                 <Route
                     exact
-                    path='/ticketsboard'
+                    path='/ticketsboard/:id'
                     render={props =>(     
                         <TicketsBoard {...props}
                         loggedInStatus={this.state.loggedInStatus}
