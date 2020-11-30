@@ -56,6 +56,7 @@ class App extends React.Component {
             loggedInStatus: "LOGGED_IN",
             user: data.user
         })
+        console.log(this.state.user)
     }
 
     // Change the state status once a user has logged out.
@@ -109,7 +110,8 @@ class App extends React.Component {
                     render={props => (
                         <Profile {...props} 
                             loggedInStatus={this.state.loggedInStatus}
-                            handleLogout={this.handleLogout} />
+                            handleLogout={this.handleLogout}
+                            user={this.state.user} />
                     )} 
                 />
                 <Route

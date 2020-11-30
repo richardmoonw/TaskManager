@@ -14,9 +14,9 @@ module Api
                 @employee = Employee.new(employee_params)
                 
                 if @employee.save
-                    render json: @employee
+                    return head 200
                 else
-                    render error:{ error: 'Unable to create employee.'}, status: 400
+                    return head 400
                 end
             end
             def update

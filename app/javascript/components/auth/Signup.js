@@ -60,11 +60,29 @@ class SignUp extends React.Component {
                     password_confirmation: this.state.password_confirmation
                 }
             }
+
+            const new_employee = {
+                name: "",
+                role: "",
+                email: this.state.email
+            }
+
             axios
                 .post(`${URL}/api/v1/registrations`, new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
-                        this.handleSuccessfulAuth(response.data);
+                        let user_data = response.data
+                        axios
+                            .post(`${URL}/api/v1/employees`, new_employee, { withCredentials: true })
+                            .then(response => {
+                                this.handleSuccessfulAuth(user_data);
+                            })
+                            .catch(error => {
+                                switch(error.response.status) {
+                                    case 400:
+                                        console.log("There was an error with your request");
+                                }
+                            })
                     }
                 })
                 .catch(error => {
