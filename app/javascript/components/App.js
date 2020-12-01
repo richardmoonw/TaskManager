@@ -28,6 +28,10 @@ class App extends React.Component {
         this.checkLoginStatus();
     }
 
+    componentDidUpdate() {
+        this.checkLoginStatus();
+    }
+
     checkLoginStatus() {
         axios.get(`/api/v1/logged_in`, { withCredentials: true })
             .then(response => {
