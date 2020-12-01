@@ -177,17 +177,22 @@ export default function NewProjectDialog(props) {
                                         <InfoText>Add members (at least 1 is required):</InfoText>
                                     </Grid>
                                     <FormGroup style={{width: "100%"}}>
-                                        {employees.map(employee => {
-                                            return (
-                                                <Grid item xs={6}>
-                                                    <FormControlLabel
-                                                        control={<Checkbox checked={state[`${employee.id}`]} onChange={handleChange} name={`${employee.id}`} />}
-                                                        label={employee.name}
-                                                        key={employee.id}
-                                                    />
-                                                </Grid> 
-                                            )
-                                        })}   
+                                        <Grid container>
+                                            {employees.map(employee => {
+                                                return (
+                                                    <Grid item xs={6}>
+                                                        <FormControlLabel
+                                                            control={<Checkbox 
+                                                            checked={state[`${employee.id}`]} 
+                                                            onChange={handleChange} 
+                                                            name={`${employee.id}`} />}
+                                                            label={employee.name}
+                                                            key={employee.id}
+                                                        />
+                                                    </Grid> 
+                                                )
+                                            })}   
+                                        </Grid>
                                     </FormGroup>
                                 </Grid>
                             </Grid>

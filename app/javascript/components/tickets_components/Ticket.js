@@ -1,81 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid'
+import React, { useState } from 'react';
+import { styled } from '@material-ui/core/styles';
+import { Card, CardContent, Button, Grid, Typography } from '@material-ui/core';
 import EditDialog from '../tickets_components/EditDialog';
+import axios from 'axios';
 
-const useStyles = makeStyles({
-	root: {
-		width: '100%',
-		marginBottom: '8px',
-		paddingBottom: '1px',
-
-	},
-	title: {
-		fontSize: 14,
-	},
-	no_pad: {
-		paddingLeft: '0',
-		paddingTop: '0',
-	},
-	small_pad: {
-		padding: ' 5px 16px 0px',
-
-		"&:last-child": {
-		paddingBottom: '5px'
-		},
-	},
-	card_details: {
-		paddingTop: '2px'
-	}
+// Styled Components
+const TicketContainer = styled(Card)({
+	width: '100%',
+	marginBottom: '1rem',
+	boxSizing: 'border-box',
+	paddingBottom: '-0.5rem'
 });
 
+const TicketTitle = styled(Typography)({
+	width: '85%',
+	fontSize: 16,
+	fontWeight: 'bold',
+	boxSizing: 'border-box',
+	margin: '0.5rem 0.5rem 1rem 0'
+});
+
+const HighPriority = styled(Typography)({
+	width: '90%',
+	color: "#7d0000",
+	fontSize: "0.8rem",
+	backgroundColor: "#ff9696",
+	borderRadius: "0.2rem",
+	padding: "0.3rem 0",
+	textAlign: "center"
+});
+
+const MediumPriority = styled(Typography)({
+	width: '90%',
+	color: "#7d5e00",
+	fontSize: "0.8rem",
+	backgroundColor: "#ffe491",
+	borderRadius: "0.2rem",
+	padding: "0.3rem 0",
+	textAlign: "center"
+});
+
+const LowPriority = styled(Typography)({
+	width: '90%',
+	color: "#2c6e00",
+	fontSize: "0.8rem",
+	backgroundColor: "#bdff91",
+	borderRadius: "0.2rem",
+	padding: "0.3rem 0",
+	textAlign: "center"
+});
+
+const AsigneeContainer = styled(Grid)({
+	textAlign: "right"
+});
+
+// Function used to render the Ticket Component.
 export default function Ticket(props) {
-	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const assignee_id = props.ticket.assignee === null ? 0 : props.ticket.assignee
 	const assignee_name = props.ticket.assignee === null ? 'Not assigned': props.employees.find(x => x.id === assignee_id).name;
 	const reporter_id = props.ticket.reporter === null ? 0 : props.ticket.reporter;
 
+	// Function used to delete the ticket from the server
+	const deleteTicket = () => {
+		setOpen(false)
+		axios({
+			method: 'delete',
+			url: `/api/v1/tickets/${props.ticket.id}`
+		})
+		.then(function(response) {
+			props.setFlag(!props.flag)
+		})
+		.catch(resp=> console.log(resp))
+	}
+	
 	return (
-		<>
-			<Card className={classes.root}>
-				<CardContent className={classes.small_pad}>
+		<>	
+			<TicketContainer>
+				<CardContent>
+					{/* Header */}
 					<Grid container alignItems='center'>
 						<Grid item xs={5} >
-							<Typography className={classes.title} color="textSecondary" >
+							<Typography color="textSecondary" >
 								ID-{props.ticket.id}
 							</Typography>
 						</Grid>
 						<Grid container item xs={7} alignItems='center' justify='flex-end'>
 							<Grid item >
-								<Button size="small"onClick={()=>setOpen(true)} >Edit</Button>
+								<Button size="small" onClick={()=>setOpen(true)}>Edit</Button>
+							</Grid>
+							<Grid item >
+								<Button size="small" onClick={()=>deleteTicket()}>Delete</Button>
 							</Grid>
 						</Grid>
 					</Grid>
 
-
-					<Typography variant="body2" component="p">
+					{/* Title */}
+					<TicketTitle>
 						{props.ticket.title}
-					</Typography>
+					</TicketTitle>
 
-					<Grid container className={classes.card_details}  alignItems='center'>
-						<Grid item xs={6} >
-							<Typography className={classes.title} color="textSecondary" >
-								{props.ticket.priority}
-							</Typography>
+					{/* Priority and asignee */}
+					<Grid container>
+						<Grid item xs={3}>
+							{props.ticket.priority === "High" && 
+								<HighPriority>High</HighPriority>}
+							{props.ticket.priority === "Medium" && 
+								<MediumPriority>Medium</MediumPriority>}
+							{props.ticket.priority === "Low" && 
+								<LowPriority>Low</LowPriority>}
 						</Grid>
-						<Grid item xs={6}>
-							<Typography className={classes.title} color="textSecondary" >
+						<AsigneeContainer item xs={9}>
+							<Typography color="textSecondary" >
 								{assignee_name}
 							</Typography>
-						</Grid>
+						</AsigneeContainer>
 					</Grid>
 				</CardContent>
-			</Card>
+			</TicketContainer>
+
+			{/* Dialog to edit a ticket */}
 			<EditDialog
 				open={open}
 				setOpen={setOpen}

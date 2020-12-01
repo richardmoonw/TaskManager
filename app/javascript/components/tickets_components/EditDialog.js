@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
 import DropMenu from './DropMenu'
-import { URL } from '../GlobalVariables';
 import Comment from './Comment';
 
 const useStyles = makeStyles({
@@ -83,7 +82,7 @@ export default function EditDialog(props) {
 
     // Comments requests
     useEffect(() => {
-		const url = `${URL}/api/v1/tickets/${props.ticket.id}`
+		const url = `/api/v1/tickets/${props.ticket.id}`
         axios.get(url)
             .then(function (response) {
 				setComments(response.data.comments);
@@ -97,7 +96,7 @@ export default function EditDialog(props) {
                 comment: comment_body
             }
         }
-        axios.put(`${URL}/api/v1/comments/${comment_id}`, updated_comment, { withCredentials: true })
+        axios.put(`/api/v1/comments/${comment_id}`, updated_comment, { withCredentials: true })
             .then(response => {
                 setFlag(!flag)
             })
@@ -107,7 +106,7 @@ export default function EditDialog(props) {
     }
 
     const deleteComment = (comment_id) => {
-        axios.delete(`${URL}/api/v1/comments/${comment_id}`, { withCredentials: true })
+        axios.delete(`/api/v1/comments/${comment_id}`, { withCredentials: true })
             .then(response => {
                 setFlag(!flag)
             })
@@ -186,18 +185,7 @@ export default function EditDialog(props) {
         })
         .catch(resp=> console.log(resp))
     }
-    const dilit = () => {
-        setOpen(false)
-        axios({
-            method: 'delete',
-            url: `api/v1/tickets/${ticket.id}`
-            
-        })
-        .then(function(response) {
-            props.setFlag(!props.flag)
-        })
-        .catch(resp=> console.log(resp))
-    }
+    
     return (
         <Dialog open={open} maxWidth='md' fullWidth={true} className={classes.popup}>
 
@@ -248,11 +236,6 @@ export default function EditDialog(props) {
                             <Grid item >
                                 <Button variant='contained' color='primary' onClick={put}>
                                     Update
-                                </Button>
-                            </Grid>
-                            <Grid item >
-                                <Button variant='contained' color='secondary' onClick={dilit}>
-                                    Delete
                                 </Button>
                             </Grid>
 

@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import axios from 'axios';
 import { styled } from '@material-ui/core/styles';
 
-
+// Styled components
 const BackgroundContainer = styled(Grid)({
 	backgroundColor: '#f5f5f5',
 	minHeight: "100vh",
