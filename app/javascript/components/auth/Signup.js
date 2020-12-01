@@ -118,8 +118,8 @@ class SignUp extends React.Component {
                     if (response.data.status === 'created') {
                         let user_data = response.data
                         let new_employee = {
-                            name: "",
-                            role: "",
+                            name: "User " + user_data.user.id,
+                            role: "Employee",
                             user_id: user_data.user.id
                         }
                         axios
