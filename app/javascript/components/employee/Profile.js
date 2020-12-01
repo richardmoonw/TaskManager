@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel, Box, Typography } from '@material-ui/core';
 import Logo from 'images/forkie.png';
-import ProfileImg from 'images/profile.png'
-import { URL } from '../GlobalVariables'; 
+import ProfileImg from 'images/profile.png';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountTree from '@material-ui/icons/AccountTree';
 import axios from 'axios';
@@ -143,17 +142,12 @@ class Profile extends React.Component {
     
     componentDidMount() {
 		setTimeout(() => {
-			// If the user is already logged in, redirect them to the profile screen.
-			if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
-				this.props.history.push("/");
-			} else {
-				this.setState({
-					id: this.props.employee.id,
-					email: this.props.user.email,
-					name: this.props.employee.name,
-					role: this.props.employee.role
-				})
-			}
+			this.setState({
+				id: this.props.employee.id,
+				email: this.props.user.email,
+				name: this.props.employee.name,
+				role: this.props.employee.role
+			})
 		}, 1000)
     }
 
@@ -180,9 +174,10 @@ class Profile extends React.Component {
 		})
 	}
 
+	// Function used to handle the logout of the application.
 	handleLogout() {
 		axios
-            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
+            .delete(`/api/v1/logout`, { withCredentials: true })
             .then(response => {
                 this.props.handleLogout();
                 this.props.history.push("/");

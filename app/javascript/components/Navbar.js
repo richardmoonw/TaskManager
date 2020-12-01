@@ -39,6 +39,10 @@ const ProjectsNavbarButton = styled(ProjectsButton)({
 	marginLeft: '1rem'
 });
 
+const NavbarContainer = styled(Grid)({
+	paddingBottom: "1.5rem"
+});
+
 
 // Navbar Component
 class Navbar extends React.Component {
@@ -49,7 +53,7 @@ class Navbar extends React.Component {
 
 	render() {
 		return(
-			<Grid container>
+			<NavbarContainer container>
 				{/* Empty space at the left */}
 				<Grid item xs={1}></Grid>
 
@@ -85,7 +89,7 @@ class Navbar extends React.Component {
 						</CenteredContainer>
 					</TopPanel>
 				</Grid>
-			</Grid>
+			</NavbarContainer>
 		)
 	}
 }
