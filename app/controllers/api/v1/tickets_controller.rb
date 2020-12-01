@@ -1,6 +1,8 @@
 module Api
     module V1
         class TicketsController < ApplicationController
+            include CurrentUserConcern
+            before_action :require_login
             protect_from_forgery with: :null_session
             before_action :find_ticket, only: [:show, :update, :destroy]
             def index
@@ -41,6 +43,11 @@ module Api
             end
             def find_ticket
                 @ticket = Ticket.find(params[:id])
+            end
+            def require_login
+                unless @current_user
+                    return head 401
+                end
             end
         end
     end
