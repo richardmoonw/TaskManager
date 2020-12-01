@@ -54,8 +54,8 @@ class Login extends React.Component {
           this.setState({
             not_user_err: false,
             invalid_password_err: false
-          });
-          this.handleSuccessfulAuth(response.data); 
+		  });
+          this.handleSuccessfulAuth(response.data.user.id); 
         }
       })
       .catch(error => {
@@ -82,8 +82,8 @@ class Login extends React.Component {
     })
   }
 
-  handleSuccessfulAuth(data) {
-    this.props.handleLogin(data);
+  handleSuccessfulAuth(user_id) {
+    this.props.handleLogin(user_id);
     this.props.history.push("/profile");
   }
 

@@ -25,7 +25,7 @@ const null_employee = [
   ]
 
 
-function TicketsBoard({match}) {
+function TicketsBoard({match, employee}) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [project, setProject] = useState([])
@@ -39,9 +39,10 @@ function TicketsBoard({match}) {
     const [flag, setFlag] = useState(false)
 
     useEffect(() => {
-        const url = `/api/v1/projects/${project_id}`
-        console.log(url)
-        axios.get(url)
+        setTimeout(() => {
+            console.log(match)
+            const url = `/api/v1/projects/${project_id}`
+            axios.get(url)
             .then(function (response) {
                 setProject(response.data)
                 setEmployees(null_employee.concat(response.data.employees))
@@ -53,6 +54,7 @@ function TicketsBoard({match}) {
                 
             })
             .catch(resp => console.log(resp))
+        }, 100)
     }, [flag])
 
     return (
@@ -84,18 +86,42 @@ function TicketsBoard({match}) {
 
             {loaded &&
                 <Grid container direction='row' justify="center" >
-                    <Column col_title='Backlog' tickets={backlogTickets}  employees={employees}project_id={project_id}
-                    flag ={flag}
-                    setFlag={setFlag}></Column>
-                    <Column col_title='Selected for development' tickets={devTickets} employees={employees}project_id={project_id}
-                    flag ={flag}
-                    setFlag={setFlag}></Column>
-                    <Column col_title='In progress' tickets={progressTickets} employees={employees}project_id={project_id}
-                    flag ={flag}
-                    setFlag={setFlag}></Column>
-                    <Column col_title='Done' tickets={doneTickets} employees={employees}project_id={project_id}
-                    flag ={flag}
-                    setFlag={setFlag}></Column>
+                    <Column 
+                        col_title='Backlog' 
+                        tickets={backlogTickets}  
+                        employees={employees}
+                        project_id={project_id}
+                        flag ={flag}
+                        setFlag={setFlag}
+                        employee_id={employee}
+                    ></Column>
+                    <Column 
+                        col_title='Selected for development' 
+                        tickets={devTickets} 
+                        employees={employees} 
+                        project_id={project_id}
+                        flag ={flag}
+                        setFlag={setFlag}
+                        employee_id={employee}
+                    ></Column>
+                    <Column 
+                        col_title='In progress' 
+                        tickets={progressTickets} 
+                        employees={employees}
+                        project_id={project_id}
+                        flag ={flag}
+                        setFlag={setFlag}
+                        employee_id={employee}
+                    ></Column>
+                    <Column 
+                        col_title='Done' 
+                        tickets={doneTickets} 
+                        employees={employees}
+                        project_id={project_id}
+                        flag ={flag}
+                        setFlag={setFlag}
+                        employee_id={employee}
+                    ></Column>
                 </Grid>
             }
 

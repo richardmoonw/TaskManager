@@ -2,7 +2,7 @@ module Api
     module V1
         class ProjectsController < ApplicationController
             include CurrentUserConcern
-            before_action :require_login
+            # before_action :require_login
             protect_from_forgery with: :null_session
             before_action :find_project, only: [:show, :update, :destroy]
             def index
