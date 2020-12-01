@@ -92,34 +92,35 @@ function Projects() {
                 <Grid container spacing={4}>
                     {projects.map((project) => (
                         <Grid item key={project.id} xs={12} sm={6} md={4}>
-                            <Link to={{
-                                pathname: `/ticketsboard/${project.id}`,
-                                state: {
-                                    project_id: project.id
-                                }
-                            }}>
                             
                             <Card className={classes.card}>
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image="https://source.unsplash.com/random"
-                                    title="Image title"
-                                />
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {project.name}
-                    </Typography>
-                                    <Typography>
-                                        {project.description}
-                    </Typography>
-                                </CardContent>
+                                <Link to={{
+                                    pathname: `/ticketsboard/${project.id}`,
+                                    state: {
+                                        project_id: project.id
+                                    }
+                                }}>
+                                    <CardMedia
+                                        className={classes.cardMedia}
+                                        image="https://source.unsplash.com/random"
+                                        title="Image title"
+                                    />
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {project.name}
+                                        </Typography>
+                                        <Typography>
+                                            {project.description}
+                                        </Typography>
+                                    </CardContent>
+                                </Link>
                                 <CardActions>
                                     <Button size="small" color="primary"onClick={()=>editPressed(project.id)}>
                                         Edit
-                    </Button>
+                                    </Button>
                                 </CardActions>
                             </Card>
-                            </Link>
+                            
                         </Grid>
                     ))}
                 </Grid>

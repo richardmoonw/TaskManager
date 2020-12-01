@@ -16,7 +16,8 @@ class App extends React.Component {
 
         this.state = {
             loggedInStatus: "NOT_LOGGED_IN",
-            user: {}
+            user: {},
+            employee: {}
         }
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -51,19 +52,30 @@ class App extends React.Component {
     }
 
     // Change the state status once a user has logged in.
-    handleLogin(data) {
+    handleLogin(user_id) {
         this.setState({
             loggedInStatus: "LOGGED_IN",
-            user: data.user
         })
-        console.log(this.state.user)
+        axios.get(`${URL}/api/v1/users/${user_id}`, { withCredentials: true })
+            .then(response => {
+                this.setState({
+                    user: response.data,
+                    employee: response.data.employee
+                })
+            })
+            .catch(error => {
+                console.log("There was an error retrieving the user data");
+            })
+            console.log(this.state.user)
+            console.log(this.state.employee)
     }
 
     // Change the state status once a user has logged out.
     handleLogout() {
         this.setState({
             loggedInStatus: 'NOT_LOGGED_IN',
-            users: {}
+            user: {},
+            employees: {} 
         })
     }
 
@@ -111,7 +123,8 @@ class App extends React.Component {
                         <Profile {...props} 
                             loggedInStatus={this.state.loggedInStatus}
                             handleLogout={this.handleLogout}
-                            user={this.state.user} />
+                            user={this.state.user}
+                            employee={this.state.employee} />
                     )} 
                 />
 

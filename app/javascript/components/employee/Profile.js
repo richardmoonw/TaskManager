@@ -16,10 +16,10 @@ class Profile extends React.Component {
 
 		this.state ={
 			editProfile: false,
-			id: "",
-			email: "",
-			name: "",
-			role: ""
+			id: '',
+			email: '',
+			name: '',
+			role: ''
 		}		
 
 		this.updateInfo = this.updateInfo.bind(this)
@@ -34,16 +34,12 @@ class Profile extends React.Component {
         if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
             this.props.history.push("/");
         } else {
-			axios.get(`${URL}/api/v1/users/${this.props.user.id}`, { withCredentials: true })
-				.then(response => {
-					let user_data = response.data
-					this.setState({
-						email: this.props.user.email,
-						id: user_data.employee.id,
-						name: user_data.employee.name,
-						role: user_data.employee.role
-					})
-				})
+			this.setState({
+				id: this.props.employee.id,
+				email: this.props.user.email,
+				name: this.props.employee.name,
+				role: this.props.employee.role
+			})
 		}
     }
 

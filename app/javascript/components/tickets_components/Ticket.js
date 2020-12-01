@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 import EditDialog from '../tickets_components/EditDialog';
-import Comment from './Comment'
 
 const useStyles = makeStyles({
 	root: {
@@ -39,8 +38,8 @@ export default function Ticket(props) {
 	const [open, setOpen] = useState(false);
 	const assignee_id = props.ticket.assignee === null ? 0 : props.ticket.assignee
 	const assignee_name = props.ticket.assignee === null ? 'Not assigned': props.employees.find(x => x.id === assignee_id).name;
-	const reporter_id = props.ticket.reporter === null ? 0 : props.ticket.reporter
-	console.log(props.ticket)
+	const reporter_id = props.ticket.reporter === null ? 0 : props.ticket.reporter;
+
 	return (
 		<>
 			<Card className={classes.root}>
@@ -87,13 +86,8 @@ export default function Ticket(props) {
 				project_id={props.project_id}
 				flag ={props.flag}
 				setFlag={props.setFlag}
+				employee_id={props.employee_id}
 			></EditDialog>
-
-			{/* Render comments */}
-			{/* {props.ticket.comments.map(comment => {
-				console.log(comment);
-				// return <Comment />
-			})} */}
 		</>
 	);
 }

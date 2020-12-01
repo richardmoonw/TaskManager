@@ -1,42 +1,16 @@
 import React from 'react';
-import { Grid, Button, TextField } from '@material-ui/core';
+import { Grid, Button, TextField, Typography, Container } from '@material-ui/core';
 import ProfileImg from 'images/profile.png'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Create from '@material-ui/icons/Create';
 import { styled } from '@material-ui/styles';
+import axios from 'axios';
 
 const styles = {
 
-    comment: {
-        paddingLeft: "1rem",
-        paddingTop: '1.5rem',
-        paddingBottom: '1.5rem',
-        boxSizing: "border-box",
-        borderBottom: "0.01rem dotted lightgray"
-    },
-
     commentProfileImg: {
-        width: "80%",
+        width: "50%",
         borderRadius: '1000px'
-    },
-
-    commentTitle: {
-        marginTop: '0.5rem'
-    },
-
-    date: {
-        color: "#888",
-        fontSize: '0.7rem',
-        marginLeft: '0.5rem'
-    },
-
-    commentBody: {
-        width:"100%",
-        backgroundColor: "white",
-        marginTop: "0.5rem",
-        marginRight: "0.5rem",
-        padding: "1rem",
-        borderRadius: "0.7rem"
     },
 
     commentTextField: {
@@ -48,11 +22,42 @@ const styles = {
     }
 }
 
+const CommentContainer = styled(Grid)({
+	paddingLeft: "1rem",
+	paddingTop: '1.5rem',
+	paddingBottom: '1.5rem',
+	boxSizing: "border-box",
+	borderBottom: "0.01rem dotted lightgray"
+})
+
 const SaveButton = styled(Button)({
     width: "80%",
     backgroundColor: "#3bb1d1",
     color: 'white',
     borderRadius: "0.5rem"
+})
+
+const CommentTitle = styled(Container)({
+	marginTop: '0.5rem'
+})
+
+const ImageContainer = styled(Grid)({
+	textAlign: "center"
+})
+
+const Date = styled(Typography)({
+	color: "#888",
+	fontSize: '0.7rem',
+	marginLeft: '0.5rem'
+})
+
+const CommentBody = styled(Grid)({
+	width:"100%",
+	backgroundColor: "white",
+	marginTop: "0.5rem",
+	marginRight: "0.5rem",
+	padding: "1rem",
+	borderRadius: "0.7rem"
 })
 
 class Comment extends React.Component {
@@ -61,14 +66,28 @@ class Comment extends React.Component {
 		super(props);
 
 		this.state={
-			editable: this.props.comment.email === this.props.email,
+			editable: this.props.employee_id === this.props.comment.employee_id,
+			employee_name: '',
 			isEditing: false,
 			comment: this.props.comment.comment
 		}
 
 		this.editComment = this.editComment.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleUpdate = this.handleUpdate.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
+	}
+
+	componentDidMount() {
+		axios.get(`/api/v1/employees/${this.props.comment.employee_id}`, { withCredentials: true })
+			.then(response => {
+				this.setState({
+					employee_name: response.data.name
+				})
+			})
+			.catch(error => {
+				console.log('There was an error fetching the user');
+			})
 	}
 
 	editComment(){
@@ -84,24 +103,28 @@ class Comment extends React.Component {
 		})
 	}
 
-	handleSubmit(){
-		this.props.editComment(this.props.comment.id, this.state.comment)
+	handleUpdate(){
+		this.props.updateComment(this.props.comment.id, this.state.comment)
 		this.editComment()
+	}
+
+	handleDelete(){
+		this.props.deleteComment(this.props.comment.id)
 	}
 
 	render() {
 		return (
-			<Grid container style={{backgroundColor: "#f7f7f7"}}>
-				<Grid item xs={12} style={styles.comment}>
+			<Grid container>
+				<CommentContainer item xs={10}>
 					<Grid container>
-						<Grid item xs={1}>
-							<img style={styles.commentProfileImg} alt={this.props.comment.person} src={ProfileImg} />
-						</Grid>
+						<ImageContainer item xs={1}>
+							<img style={styles.commentProfileImg} alt={this.props.comment.employee_id} src={ProfileImg} />
+						</ImageContainer>
 						<Grid item xs={8}>
-							<p style={styles.commentTitle}>
-								<strong>{this.props.comment.person}</strong>
-								<span style={styles.date}>{this.props.comment.created}</span>
-							</p>
+							<CommentTitle>
+								<strong>{this.state.employee_name}</strong>
+								<Date>{this.props.comment.created_at}</Date>
+							</CommentTitle>
 						</Grid>
 						{ this.state.editable && 
 							<>
@@ -109,7 +132,7 @@ class Comment extends React.Component {
 									<Button onClick={this.editComment}>
 										<Create />
 									</Button>
-									<Button onClick={() => {this.props.deleteComment(this.props.comment.id)}}>
+									<Button onClick={this.handleDelete}>
 										<DeleteIcon />
 									</Button>
 								</Grid>
@@ -118,7 +141,7 @@ class Comment extends React.Component {
 					</Grid>
 					{ !this.state.isEditing && 
 						<Grid container>
-							<Grid item xs={12} style={styles.commentBody}>{this.props.comment.comment}</Grid>
+							<CommentBody item xs={12}>{this.props.comment.comment}</CommentBody>
 						</Grid>
 					}
 					{ this.state.isEditing && 
@@ -137,14 +160,14 @@ class Comment extends React.Component {
 							</Grid>
 							<Grid item xs={3}>
 								<SaveButton 
-									onClick={this.handleSubmit}
+									onClick={this.handleUpdate}
 								>Save</SaveButton>
 							</Grid>
 						</Grid>
 					</>
 					}
 					
-				</Grid>
+				</CommentContainer>
 			</Grid>
 		)
 	}
