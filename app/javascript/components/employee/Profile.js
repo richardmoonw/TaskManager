@@ -1,13 +1,125 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
-import { styles, ProjectsButton } from '../styles';
+import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel, Box, Typography } from '@material-ui/core';
 import Logo from 'images/forkie.png';
 import ProfileImg from 'images/profile.png'
 import { URL } from '../GlobalVariables'; 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountTree from '@material-ui/icons/AccountTree';
 import axios from 'axios';
+import { styled } from '@material-ui/core/styles';
+
+// Styled Components
+const ProjectsButton = styled(Button)({
+    width: "100%",
+    background: "#3bb1d1",
+    boxShadow: '2px 2px 5px lightgray',
+    color: 'white',
+    '&:hover': {
+        background: '#0d83a3'
+	}
+});
+
+const NavPanel = styled(Grid)({
+	backgroundColor: 'white'
+});
+
+const TopPanel = styled(Grid)({
+    marginTop: '1rem'
+});
+
+const TabPanel = styled(Paper)({
+	marginTop: '1rem',
+	boxShadow: "none"
+});
+
+const BackgroundContainer = styled(Box)({
+	backgroundColor: '#f5f5f5',
+    minHeight: "104vh"
+});
+
+const ProfileBoard = styled(Grid)({
+	paddingTop: "3.2rem"
+});
+
+const CenteredContainer = styled(Grid)({
+	textAlign: 'center'
+});
+
+const LogoutNavbarButton = styled(Button)({
+	width: '40%',
+	marginLeft: '1rem'
+});
+
+const ProjectsNavbarButton = styled(ProjectsButton)({
+	width: '40%',
+	marginLeft: '1rem'
+});
+
+const ProfileName = styled(Typography)({
+	fontSize: '1.7rem',
+	fontWeight: 'bold',
+	marginTop: '1rem',
+	marginBottom: '0rem'
+});
+
+const ProfileRole = styled(Typography)({
+	fontSize: '1.2rem',
+	marginBottom: '0.3rem'
+});
+
+const ProfileEmail = styled(Typography)({
+	fontSize: '0.7rem',
+	marginBottom: '1rem'
+});
+
+const UpdateTitle = styled(Typography)({
+	fontSize: '1.7rem',
+	marginTop: "1rem",
+	marginBottom: "1rem"
+});
+
+const RoleLabel = styled(InputLabel)({
+	fontSize: '12px',
+	textAlign: 'left'
+});
+
+const UpdateTextField = styled(TextField)({
+	width: "70%",
+	marginBottom: "1rem",
+	textAlign: "left"
+});
+
+const UpdateSelect = styled(Select)({
+	width: "70%",
+	marginBottom: "1rem",
+	textAlign: "left"
+});
+
+const ProfileContainer = styled(Grid)({
+	backgroundColor: "white",
+	borderRadius: "0.5rem",
+	paddingBottom: "2rem",
+	marginBottom: "2rem"
+});
+
+const ContainerTitle = styled(Typography)({
+	fontSize: '1.75rem',
+	fontFamily: 'Verdana',
+	margin: '2rem 0rem 1rem 2rem'
+});
+
+const ContainerText = styled(Typography)({
+	fontSize: '1.05rem',
+	fontFamily: 'Arial',
+	lineHeight: '1.5rem',
+	marginLeft: '2rem'
+});
+
+const FormattedLink = styled(Link)({
+	textDecoration: 'none'
+});
+
 
 class Profile extends React.Component {
 
@@ -96,9 +208,9 @@ class Profile extends React.Component {
 
     render() {
         return(
-            <div style={styles.background}>
+            <BackgroundContainer>
                 {/* Container for the top menu */}
-                <Grid container spacing={5} style={styles.navPanel}>
+                <NavPanel container spacing={5}>
                   
 					{/* Empty space at the left */}
 					<Grid item xs={1}></Grid>
@@ -107,37 +219,35 @@ class Profile extends React.Component {
 					<Grid item xs={11}>
 
 						{/* Top Panel: Logo */}
-						<Grid container style={styles.topPanel}>
+						<TopPanel container>
 							<Grid item xs={1}>
 								<img alt="logo" width="100%" src={Logo}></img>
 							</Grid>
 							<Grid item xs={7}></Grid>
-							<Grid item xs={3} style={styles.contentCentered}>
-								<Link style={styles.link} to="/projects">
-									<ProjectsButton
+							<CenteredContainer item xs={3}>
+								<FormattedLink to="/projects">
+									<ProjectsNavbarButton
 										variant="contained"
 										color="primary"
 										startIcon={<AccountTree />}
-										style={styles.navbarButtons}
 									>
 										Projects
-									</ProjectsButton>
-								</Link>
-								<Button
-									variant="contained"
-									color="secondary"
-									startIcon={<ExitToAppIcon />}
-									style={styles.navbarButtons}
-									onClick={this.handleLogout}
-								>
-									Sign out
-								</Button>
-							</Grid>
-						</Grid>
+									</ProjectsNavbarButton>
+								</FormattedLink>
+									<LogoutNavbarButton
+										variant="contained"
+										color="secondary"
+										startIcon={<ExitToAppIcon />}
+										onClick={this.handleLogout}
+									>
+										Sign out
+									</LogoutNavbarButton>
+							</CenteredContainer>
+						</TopPanel>
 						
 
 						<Grid container>
-							<Paper style={styles.tabPanel}>
+							<TabPanel>
 								<Tabs  
 								value={0}
 								indicatorColor="secondary"
@@ -147,44 +257,44 @@ class Profile extends React.Component {
 									<Tab label="Analytics" disabled />
 									<Tab label="Recent activity" disabled />
 								</Tabs>
-							</Paper> 
+							</TabPanel> 
 						</Grid>
 					</Grid>
-                </Grid>
+                </NavPanel>
 
 				{/* Page Content */}
-				<Grid container spacing={10} style={styles.profileBoard}>
+				<ProfileBoard container spacing={10}>
 					<Grid item xs={1}></Grid>
 
 					{/* Left Menu */}
 					<Grid item xs={3}>
-						<Grid container style={styles.contentCentered}>
+						<CenteredContainer container>
 
 							{/* Profile Photo */}
 							<Grid item xs={12}>
-								<img alt="Forkie" width="70%" src={ProfileImg} style={styles.profilePhoto}/>
+								<img alt="Forkie" width="70%" src={ProfileImg} style={{borderRadius: "1000px"}}/>
 							</Grid>
 
 							{/* The information is not being edited */}
 							{ !this.state.editProfile && 
 								<>
 									<Grid item xs={12}>
-										<p style={styles.profileName}>{this.state.name}</p>
+										<ProfileName>{this.state.name}</ProfileName>
 									</Grid>
 									<Grid item xs={12}>
-										<p style={styles.profileRole}>{this.state.role}</p>
+										<ProfileRole>{this.state.role}</ProfileRole>
 									</Grid>
 									<Grid item xs={12}>
-										<p style={styles.profileEmail}><strong>{this.state.email}</strong></p>
+										<ProfileEmail><strong>{this.state.email}</strong></ProfileEmail>
 									</Grid>
-									<Grid item xs={12} style={styles.contentCentered}>
+									<CenteredContainer item xs={12}>
 										<Button 
 											style={{width: "60%"}} 
 											variant="contained" 
 											color="secondary"
 											onClick={this.enableEditing}
 										>EDIT INFO</Button>
-									</Grid>
+									</CenteredContainer>
 								</>
 							}
 
@@ -193,34 +303,32 @@ class Profile extends React.Component {
 								<>
 									<Grid item xs={12}>
 										<Grid item xs={12}>
-											<p style={styles.updateTitle}>Update your information</p>
+											<UpdateTitle>Update your information</UpdateTitle>
 										</Grid>
 										<form onSubmit={this.updateInfo} noValidate autoComplete="off">
 											<Grid item xs={12}>
-												<TextField 
+												<UpdateTextField 
 													name="name"
 													onChange={this.handleChange} 
 													label="Enter your name"
 													value={this.state.name}
-													style={styles.updateFormElement}
 												/>
 											</Grid>
 											<Grid item xs={12}>
 												<Grid item xs={12} style={{paddingLeft: "15%"}}>
-													<InputLabel style={styles.roleLabel} id="role">Which is your role?</InputLabel>
+													<RoleLabel id="role">Which is your role?</RoleLabel>
 												</Grid>
-												<Select 
+												<UpdateSelect 
 													labelId="role"
 													name="role"
 													value={this.state.role}
 													onChange={this.handleChange}
-													style={styles.updateFormElement}
 												>
 													<MenuItem value="Project Manager">Project Manager</MenuItem>
 													<MenuItem value="Employee">Employee</MenuItem>
-												</Select>
+												</UpdateSelect>
 											</Grid>
-											<Grid item xs={12} style={styles.contentCentered}>
+											<CenteredContainer item xs={12}>
 												<Button 
 													style={{width: "60%"}} 
 													variant="contained" 
@@ -228,12 +336,12 @@ class Profile extends React.Component {
 													type="submit"
 													onClick={this.handleSubmit}
 												>UPDATE INFO</Button>
-											</Grid>
+											</CenteredContainer>
 										</form>	
 									</Grid>	
 								</>
 							}
-						</Grid>		
+						</CenteredContainer>		
 					</Grid>
 					
 					{/* Right Menu */}
@@ -241,37 +349,39 @@ class Profile extends React.Component {
 						<Grid container>
 
 							{/* Welcome back panel */}
-							<Grid item xs={12} style={styles.profileContainer}>
-								<p style={styles.profileTitle}>Welcome back!</p>
+							<ProfileContainer item xs={12}>
+								<ContainerTitle>Welcome back!</ContainerTitle>
 								<Grid item xs={9}>
-									<p style={styles.profileText}>Have you seen what's happening with your projects today?
+									<ContainerText>Have you seen what's happening with your projects today?
 															Remember that the key of success is the teamwork. Do not forget
 															to finish all your assigned tasks before you sign out or someone 
-															will be hated by their teammates from now on.</p>
+															will be hated by their teammates from now on.</ContainerText>
 								</Grid>
 								
-							</Grid>
+							</ProfileContainer>
 
 							{/* Projects panel */}
-							<Grid item xs={12} style={styles.profileContainer}>
-								<p style={styles.profileTitle}>Projects</p>
+							<ProfileContainer item xs={12}>
+								<ContainerTitle>Projects</ContainerTitle>
 								<Grid item xs={9}>
-									<p style={styles.profileText}>Projects, projects and more projects. What would the world be without 
+									<ContainerText>Projects, projects and more projects. What would the world be without 
 															them? I don't even want to think about it. A project is an individual 
 															or collaborative enterprise that is carefully planned to achieve a particular
-															aim. You should check the projects in which you are currently involved.</p>
+															aim. You should check the projects in which you are currently involved.</ContainerText>
 								</Grid>
 								<Grid container>
 									<Grid item xs={9}></Grid>
 									<Grid item xs={2}>
-										<ProjectsButton>GO TO PROJECTS</ProjectsButton>
+										<FormattedLink to="/projects">
+											<ProjectsButton>GO TO PROJECTS</ProjectsButton>
+										</FormattedLink>
 									</Grid>
 								</Grid>
-							</Grid>
+							</ProfileContainer>
 						</Grid>
 					</Grid>
-				</Grid>
-            </div>
+				</ProfileBoard>
+            </BackgroundContainer>
         )
     }
 }
