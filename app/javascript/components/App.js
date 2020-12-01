@@ -6,7 +6,6 @@ import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
 import Profile from './employee/Profile';
-import { URL } from './GlobalVariables';
 import TicketsBoard from './tickets_components/TicketsBoard'
 
 class App extends React.Component {
@@ -30,7 +29,7 @@ class App extends React.Component {
     }
 
     checkLoginStatus() {
-        axios.get(`${URL}/api/v1/logged_in`, { withCredentials: true })
+        axios.get(`/api/v1/logged_in`, { withCredentials: true })
             .then(response => {
                 if (response.data.logged_in === true && this.state.loggedInStatus === 'NOT_LOGGED_IN') {
                     axios.get(`/api/v1/users/${response.data.user.id}`, { withCredentials: true })
@@ -59,7 +58,7 @@ class App extends React.Component {
         this.setState({
             loggedInStatus: "LOGGED_IN",
         })
-        axios.get(`${URL}/api/v1/users/${user_id}`, { withCredentials: true })
+        axios.get(`/api/v1/users/${user_id}`, { withCredentials: true })
             .then(response => {
                 this.setState({
                     user: response.data,
@@ -121,11 +120,12 @@ class App extends React.Component {
                     exact 
                     path='/profile' 
                     render={props => (
-                        <Profile {...props} 
-                            loggedInStatus={this.state.loggedInStatus}
+                        this.state.loggedInStatus === "LOGGED_IN"
+                        ? <Profile {...props}
                             handleLogout={this.handleLogout}
                             user={this.state.user}
                             employee={this.state.employee} />
+                        : <p>No authorized</p>
                     )} 
                 />
 
@@ -133,12 +133,13 @@ class App extends React.Component {
                 <Route
                     exact
                     path='/ticketsboard/:id'
-                    render={props =>(     
-                        <TicketsBoard {...props}
-                            loggedInStatus={this.state.loggedInStatus}
+                    render={props =>(
+                        this.state.loggedInStatus === "LOGGED_IN"
+                        ? <TicketsBoard {...props}
                             handleLogout={this.handleLogout}
                             employee={this.state.employee.employee_id} 
                         />
+                        : <p>No authorized</p>
                     )}
                 />
 
@@ -146,10 +147,11 @@ class App extends React.Component {
                 <Route
                     exact
                     path='/projects'
-                    render={props =>(     
-                        <Dashboard {...props}
-                        loggedInStatus={this.state.loggedInStatus}
-                        handleLogout={this.handleLogout} />
+                    render={props =>(   
+                        this.state.loggedInStatus === "LOGGED_IN"  
+                        ? <Dashboard {...props}
+                            handleLogout={this.handleLogout} />
+                        : <p>No authorized</p>
                     )}
                 />
                 

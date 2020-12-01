@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react'
+import { useHistory } from 'react-router';
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Column from '../tickets_components/Column'
 import { makeStyles } from '@material-ui/core/styles';
 import FormDialog from '../tickets_components/FormDialog'
+import Navbar from '../Navbar';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios'
 const useStyles = makeStyles(() => ({
@@ -25,11 +27,12 @@ const null_employee = [
   ]
 
 
-function TicketsBoard({match, employee}) {
+function TicketsBoard({ handleLogout, match, employee}) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [project, setProject] = useState([])
-    const [loaded, setLoaded] = useState(false)
+    const [project, setProject] = useState([]);
+    const history = useHistory();
+    const [loaded, setLoaded] = useState(false);
     const project_id = match.params.id
     const [backlogTickets, setBacklogTickets] = useState([])
     const [devTickets, setDevTickets] = useState([])
@@ -40,7 +43,6 @@ function TicketsBoard({match, employee}) {
 
     useEffect(() => {
         setTimeout(() => {
-            console.log(match)
             const url = `/api/v1/projects/${project_id}`
             axios.get(url)
             .then(function (response) {
@@ -57,9 +59,22 @@ function TicketsBoard({match, employee}) {
         }, 100)
     }, [flag])
 
+    const logout = () => {
+		axios
+            .delete(`/api/v1/logout`, { withCredentials: true })
+            .then(response => {
+                handleLogout();
+                history.push("/");
+            })
+            .catch(error => {
+                console.log("logout error", error);
+            })   
+	}
+
     return (
 
         <Fragment>
+            <Navbar handleLogout={logout}/>
 
             <Grid container className={classes.top_bar} direction='row' alignItems='center'>
                 <Grid container item md={6} xs={12} justify='center' direction='row'>
