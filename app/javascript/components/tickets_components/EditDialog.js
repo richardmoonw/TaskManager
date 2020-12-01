@@ -1,33 +1,66 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, DialogContent } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button'
+import { Grid, TextField, Dialog, DialogTitle, DialogContent, 
+    IconButton, Button, Typography } from '@material-ui/core';
 import axios from 'axios'
 import DropMenu from './DropMenu'
 import Comment from './Comment';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import SendIcon from '@material-ui/icons/Send';
+import CloseIcon from '@material-ui/icons/Close';
+import { styled } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-    bottom_field: {
-        marginTop: '10px',
-        width: '98%'
-    },
-    popup: {
-        minHeight: '70%',
-        backgroundColor: "#f7f7f7"
-    },
-    title: {
-        width: '98%'
-    },
-    description: {
-        width: '98%'
-    },
-    extras: {
-        paddingLeft: '14px'
-    }
-
+// Styled Components
+const FormattedTextField = styled(TextField)({
+    width: '100%',
+    marginBottom: '1rem'
 });
+
+const TitleContainer = styled(DialogTitle)({
+    textAlign: "center",
+    padding: "1.5rem 0 1.5rem 0",
+    borderBottom: "0.1rem solid lightgray"
+});
+
+const TitleIcon = styled(EditOutlinedIcon)({
+    color: "#607afc"
+});
+
+const Title = styled(Typography)({
+    fontSize: "2rem",
+    fontFamily: "Arial",
+    color: "#607afc"
+});
+
+const ButtonContainer = styled(Grid)({
+    textAlign: "center"
+});
+
+const FormattedDialogContent = styled(DialogContent)({
+    backgroundColor: "#f9f9f9"
+});
+
+const SidePanel = styled(Grid)({
+    paddingRight: "1rem",
+    boxSizing: "border-box"
+})
+
+const InfoText = styled(Typography)({
+    margin: "1.2rem 0 1rem 0",
+    fontSize: "1rem",
+    fontWeight: "bold"
+});
+
+const OptionButton = styled(Button)({
+    margin: "1rem 0 2rem 0",
+    width: "90%",
+    heigth: "1.5rem"
+});
+
+const FormattedDropMenu = styled(DropMenu)({
+    width: "100%"
+})
+
+
 const priorityItems = [
     {
         id: 1,
@@ -62,7 +95,6 @@ const statusItems = [
     },
 ]
 export default function EditDialog(props) {
-    const classes = useStyles();
     const { open, setOpen, employees, ticket, reporter_id, assignee_id, employee_id} = props;
 
     // Comments variables
@@ -123,7 +155,6 @@ export default function EditDialog(props) {
                 ticket_id: ticket.id
             }
         }
-
         axios.post('/api/v1/comments', new_comment, { withCredentials: true })
             .then(response => {
                 setFlag(!flag)
@@ -131,12 +162,10 @@ export default function EditDialog(props) {
             .catch(error => {
                 console.log("There was an error creating the comment");
             })
+        setNewComment('');
     }
 
-
-
-
-
+    // Functions used to edit the Ticket
     const changePriority = (value) =>{
         setPriority(value)
     }
@@ -149,8 +178,9 @@ export default function EditDialog(props) {
     const changeStatus = (value) =>{
         setStatus(value)
     }
+
+    // Function used to edit the comment in the server
     const put = () =>{
-        
         var repo = null
         var ass = null
         
@@ -187,83 +217,117 @@ export default function EditDialog(props) {
     }
     
     return (
-        <Dialog open={open} maxWidth='md' fullWidth={true} className={classes.popup}>
-
-            <DialogContent className={classes.popup}>
-                <Grid item container xs={12} justify='flex-end' >
-                    <Button onClick={() => setOpen(false)}>
-                        X
-                        </Button>
+        <Dialog open={open} onClose={() => setOpen(false)} maxWidth='md' fullWidth={true}>
+            {/* Dialog Header */}
+            <TitleContainer>
+                <Grid container>
+                    <Grid item xs={11}></Grid>
+                    <ButtonContainer item xs={1}>
+                        <IconButton onClick={() => setOpen(false)}>
+                            <CloseIcon />
+                        </IconButton>
+                    </ButtonContainer>
                 </Grid>
-                <Grid container direction='row' className={classes.popup}>
-                    <Grid item container md={7} xs={12} direction='column'>
-                        <Grid item className={classes.title} >
-                            <TextField
-                                className={classes.title}
-                                id="title"
-                                label="Title"
-                                variant="outlined"
-                                inputProps={{ maxLength: 120 }}
-                                multiline
-                                rowsMax={2}
-                                value={title}
-                                onChange={(e)=> setTitle(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item className={classes.bottom_field} >
-
-                            <TextField
-                                className={classes.description}
-                                rows={5}
-                                id="Description"
-                                label="Description"
-                                variant="outlined"
-                                inputProps={{ maxLength: 5000 }}
-                                multiline
-                                rowsMax={22}
-                                value={description}
-                                onChange={(e)=> setDescription(e.target.value)}
-                            />
-                        </Grid>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TitleIcon fontSize="large" />
                     </Grid>
-                    <Grid item container md={5} xs={12} className={classes.extras} direction='column'>
-                        <DropMenu title='Priority' items={priorityItems} current={current_priority_id} setValue={changePriority}/>
-                        <DropMenu title='Assignee' items={employees} current={assignee_id} setValue={changeAssignee}/>
-                        <DropMenu title='Reporter' items={employees} current={reporter_id} setValue={changeReporter} />
-
-                        <DropMenu title='Status' items={statusItems} current={current_status_id}  setValue={changeStatus}/>
-                        <Grid item container spacing={2} >
-                            <Grid item >
-                                <Button variant='contained' color='primary' onClick={put}>
-                                    Update
-                                </Button>
+                    <Grid item xs={12}>
+                        <Title>Edit Ticket</Title>     
+                    </Grid>
+                </Grid>
+            </TitleContainer>
+            <FormattedDialogContent>
+                <Grid container>
+                    {/* Ticket Name and Description */}
+                    <SidePanel item xs={6}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <InfoText>Ticket general information:</InfoText>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormattedTextField
+                                    id="title"
+                                    label="Type the ticket name"
+                                    variant="outlined"
+                                    inputProps={{ maxLength: 120 }}
+                                    value={title}
+                                    onChange={(e)=> setTitle(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormattedTextField
+                                    id="Description"
+                                    label="Type the ticket description"
+                                    variant="outlined"
+                                    inputProps={{ maxLength: 5000 }}
+                                    multiline
+                                    rows={2}
+                                    value={description}
+                                    onChange={(e)=> setDescription(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Priority' items={priorityItems} current={current_priority_id} setValue={changePriority}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Status' items={statusItems} current={current_status_id}  setValue={changeStatus}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Assignee' items={employees} current={assignee_id} setValue={changeAssignee}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Reporter' items={employees} current={reporter_id} setValue={changeReporter} />
+                            </Grid>
+                        </Grid>
+                        <Grid container>
+                            <Grid item xs={1}></Grid>
+                            <ButtonContainer item xs={5}>
+                                <OptionButton variant='contained' color='primary' onClick={put}>Update</OptionButton>
+                            </ButtonContainer>
+                            <ButtonContainer item xs={5}>
+                                <OptionButton variant='contained' onClick={() => setOpen(false)}>Maybe later</OptionButton>
+                            </ButtonContainer>
+                        </Grid>
+                    </SidePanel>
+                    <Grid item xs={6}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <InfoText>Comments:</InfoText>
                             </Grid>
 
+                            {/* Render comments */}
+                            <Grid container>
+                                <Grid item xs={10}>
+                                    <FormattedTextField
+                                        label="Enter a comment" 
+                                        variant="outlined"
+                                        value={newComment}
+                                        multiline
+                                        rows={2}
+                                        onChange={(event) => setNewComment(event.target.value)}    
+                                    />
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+                                <ButtonContainer item xs={1}>
+                                    <IconButton onClick={createComment}>
+                                        <SendIcon color="primary" />
+                                    </IconButton>
+                                </ButtonContainer>
+                            </Grid>
+                        
+                            { comments.map(comment => {
+                                return <Comment 
+                                            key={comment.id} 
+                                            comment={comment} 
+                                            employee_id={employee_id}
+                                            updateComment={updateComment}
+                                            deleteComment={deleteComment} />
+                            })}
                         </Grid>
-
-                    </Grid>
-
-
+                    </Grid>    
                 </Grid>
-                {/* Render comments */}
-                <h1>Comments</h1>
-                <TextField
-                    label="Write a comment" 
-                    varian="outlined"
-                    value={newComment}
-                    onChange={(event) => setNewComment(event.target.value)}    
-                />
-                <Button onClick={createComment}>Save</Button>
-				{ comments.map(comment => {
-                    return <Comment 
-                                key={comment.id} 
-                                comment={comment} 
-                                employee_id={6}
-                                updateComment={updateComment}
-                                deleteComment={deleteComment} />
-				})}
-
-            </DialogContent>
+            </FormattedDialogContent>
         </Dialog>
     )
 }

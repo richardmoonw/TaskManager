@@ -58,7 +58,9 @@ function TicketsBoard({ handleLogout, match, employee}) {
                 
             })
             .catch(resp => console.log(resp))
-        }, 100)
+        }, 1000)
+
+        
     }, [flag])
 
     // Function used to handle the logout of the application.
@@ -110,7 +112,7 @@ function TicketsBoard({ handleLogout, match, employee}) {
                                 project_id={project_id}
                                 flag ={flag}
                                 setFlag={setFlag}
-                                employee_id={employee}
+                                employee_id={employee.id}
                             ></Column>
 
                             {/* Dev column */}
@@ -122,7 +124,7 @@ function TicketsBoard({ handleLogout, match, employee}) {
                                 project_id={project_id}
                                 flag ={flag}
                                 setFlag={setFlag}
-                                employee_id={employee}
+                                employee_id={employee.id}
                             ></Column>
 
                             {/* In progress column */}
@@ -134,7 +136,7 @@ function TicketsBoard({ handleLogout, match, employee}) {
                                 project_id={project_id}
                                 flag ={flag}
                                 setFlag={setFlag}
-                                employee_id={employee}
+                                employee_id={employee.id}
                             ></Column>
 
                             {/* Done column */}
@@ -146,7 +148,7 @@ function TicketsBoard({ handleLogout, match, employee}) {
                                 project_id={project_id}
                                 flag ={flag}
                                 setFlag={setFlag}
-                                employee_id={employee}
+                                employee_id={employee.id}
                             ></Column>
                         </Grid>
                     }

@@ -1,21 +1,16 @@
 
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import React, {useState} from 'react'
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import { Typography } from '@material-ui/core';
+import React, {useState} from 'react';
+import { styled } from '@material-ui/core/styles';
+import { MenuItem, InputLabel, FormControl, Select } from '@material-ui/core';
 
-const useStyles = makeStyles({
-    bottom_margin:{
-        marginBottom: '15px'
-    }
-
-});
+// Styled Components
+const FormattedFormControl = styled(FormControl)({
+    width: "90%",
+    marginBottom: "1rem"
+})
 
 export default function DropMenu(props) {
-    const classes = useStyles();
     const items = props.items;
     const [selectedItem, setSelectedItem] = useState(items.find(x => x.id === props.current));
     
@@ -34,22 +29,23 @@ export default function DropMenu(props) {
     };
 
     return (
-        <Grid item container className = {classes.bottom_margin} direction='row' alignItems='center'>
-            <Grid item md={4} xs={12}>
-            <Typography variant="subtitle1" >
-                {props.title}
-            </Typography>
-            </Grid>
-            <Grid item md={8} xs={12}>
-                <FormControl>
-                    <Select displayEmpty value={items[getItemIndex(selectedItem.id,items)]} onChange={handleChange}>
+        <Grid item>
+            <Grid item xs={12}>
+                <FormattedFormControl>
+                    <InputLabel shrink id={props.title}>{props.title}</InputLabel>
+                    <Select 
+                        labelId={props.title}
+                        displayEmpty 
+                        value={items[getItemIndex(selectedItem.id,items)]} 
+                        onChange={handleChange}
+                    >
                         {items.map(item => {
                             return(
                                 <MenuItem key = {item.id} value = {item}>{item.name}</MenuItem>
                             )
                         })}
                     </Select>
-                </FormControl>
+                </FormattedFormControl>
             </Grid>
         </Grid>
     );

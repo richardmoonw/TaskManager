@@ -55,6 +55,10 @@ const OptionButton = styled(Button)({
     heigth: "1.5rem"
 });
 
+const FormattedFormGroup = styled(FormGroup)({
+    width: "100%"
+});
+
 export default function NewProjectDialog(props) {
     const { open, setOpen } = props;
     const [loaded, setLoaded] = useState(false)
@@ -146,6 +150,7 @@ export default function NewProjectDialog(props) {
             {
                 loaded &&
                 <Dialog open={open} onClose={close} maxWidth='md' fullWidth={true}>
+                    {/* Dialog Header */}
                     <TitleContainer>
                         <Grid container>
                             <Grid item xs={11}></Grid>
@@ -164,75 +169,75 @@ export default function NewProjectDialog(props) {
                             </Grid>
                         </Grid>
                     </TitleContainer>
-                        <FormattedDialogContent>
-                            <Grid container>
-                                {/* Project General Information */}
-                                <SidePanel item xs={6}>
-                                    <Grid container>
-                                        <Grid item xs={12}>
-                                            <InfoText>Project information:</InfoText>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <FormattedTextField
-                                                id="Project Name"
-                                                label="Type the project name"
-                                                variant="outlined"
-                                                inputProps={{ maxLength: 120 }}
-                                                value={projName}
-                                                onChange={(e) => setProjName(e.target.value)}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <FormattedTextField
-                                                id="Project Description"
-                                                label="Type the project description"
-                                                variant="outlined"
-                                                inputProps={{ maxLength: 120 }}
-                                                multiline
-                                                rows={2}
-                                                value={projDescription}
-                                                onChange={(e) => setProjDescription(e.target.value)}
-                                            />
-                                        </Grid>
+                    <FormattedDialogContent>
+                        <Grid container>
+                            {/* Project General Information */}
+                            <SidePanel item xs={6}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <InfoText>Project information:</InfoText>
                                     </Grid>
-                                </SidePanel>
-                                <Grid item xs={6}>
-                                    <Grid container>
-                                        <Grid item xs={12}>
-                                            <InfoText>Update members (at least 1 is required):</InfoText>
-                                        </Grid>
-                                        <FormGroup style={{width: "100%"}}>
-                                            <Grid container>
-                                                {employees.map(employee => {
-                                                    return (
-                                                        <Grid item xs={6}>
-                                                            <FormControlLabel
-                                                                control={<Checkbox checked={state[`${employee.id}`]} onChange={handleChange} name={`${employee.id}`} />}
-                                                                label={employee.name}
-                                                                key={employee.id}
-                                                            />
-                                                        </Grid> 
-                                                    )
-                                                })}   
-                                            </Grid>
-                                        </FormGroup>
+                                    <Grid item xs={12}>
+                                        <FormattedTextField
+                                            id="Project Name"
+                                            label="Type the project name"
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 120 }}
+                                            value={projName}
+                                            onChange={(e) => setProjName(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <FormattedTextField
+                                            id="Project Description"
+                                            label="Type the project description"
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 120 }}
+                                            multiline
+                                            rows={2}
+                                            value={projDescription}
+                                            onChange={(e) => setProjDescription(e.target.value)}
+                                        />
                                     </Grid>
                                 </Grid>
+                            </SidePanel>
+                            <Grid item xs={6}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <InfoText>Update members (at least 1 is required):</InfoText>
+                                    </Grid>
+                                    <FormattedFormGroup>
+                                        <Grid container>
+                                            {employees.map(employee => {
+                                                return (
+                                                    <Grid item xs={6}>
+                                                        <FormControlLabel
+                                                            control={<Checkbox checked={state[`${employee.id}`]} onChange={handleChange} name={`${employee.id}`} />}
+                                                            label={employee.name}
+                                                            key={employee.id}
+                                                        />
+                                                    </Grid> 
+                                                )
+                                            })}   
+                                        </Grid>
+                                    </FormattedFormGroup>
+                                </Grid>
                             </Grid>
-                            <Grid container>
-                                <Grid item xs={2}></Grid>
-                                <ButtonContainer item xs={4}>
-                                    <OptionButton variant='contained' color='primary' onClick={save}>
-                                        Update Project
-                                    </OptionButton>
-                                </ButtonContainer>
-                                <ButtonContainer item xs={4}>
-                                    <OptionButton variant='contained' onClick={close}>
-                                        Maybe later
-                                    </OptionButton>
-                                </ButtonContainer>
-                            </Grid>
-                        </FormattedDialogContent>
+                        </Grid>
+                        <Grid container>
+                            <Grid item xs={2}></Grid>
+                            <ButtonContainer item xs={4}>
+                                <OptionButton variant='contained' color='primary' onClick={save}>
+                                    Update Project
+                                </OptionButton>
+                            </ButtonContainer>
+                            <ButtonContainer item xs={4}>
+                                <OptionButton variant='contained' onClick={close}>
+                                    Maybe later
+                                </OptionButton>
+                            </ButtonContainer>
+                        </Grid>
+                    </FormattedDialogContent>
                 </Dialog>
             }
 

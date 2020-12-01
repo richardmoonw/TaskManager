@@ -53,7 +53,5 @@ export default function Column(props) {
                 </Grid>
             </ColumnContainer>
         </Grid>
-
-
     );
 }
