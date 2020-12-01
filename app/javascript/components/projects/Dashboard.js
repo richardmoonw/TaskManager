@@ -1,11 +1,17 @@
 import React from 'react';
-import './App.css'
-import Navbar from '../Navbar'
-import Projects from './projects'
-import { Grid } from '@material-ui/core'
-import { URL } from '../GlobalVariables';
+import Navbar from '../Navbar';
+import Projects from './Projects';
+import { Grid } from '@material-ui/core';
 import axios from 'axios';
+import { styled } from '@material-ui/core/styles';
 
+
+const BackgroundContainer = styled(Grid)({
+	backgroundColor: '#f5f5f5',
+	minHeight: "100vh",
+	height: "100%",
+	paddingBottom: "2rem"
+});
 
 class Dashboard extends React.Component {
 	
@@ -15,9 +21,10 @@ class Dashboard extends React.Component {
 		this.handleLogout = this.handleLogout.bind(this);
 	}
 
+	// Function used to handle the logout of the application.
 	handleLogout() {
 		axios
-            .delete(`${URL}/api/v1/logout`, { withCredentials: true })
+            .delete(`/api/v1/logout`, { withCredentials: true })
             .then(response => {
                 this.props.handleLogout();
                 this.props.history.push("/");
@@ -28,16 +35,12 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		// const classes = useStyles();
 		return (
 			<>
 				<Navbar handleLogout={this.handleLogout}/>
-				<Grid container>
-					<Grid item xs={1}></Grid>
-					<Grid item xs={10}>
-						<Projects/>
-					</Grid>
-				</Grid>
+				<BackgroundContainer container>
+					<Projects/>
+				</BackgroundContainer>
 			</>
 	  	);
 	}

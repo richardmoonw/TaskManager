@@ -5,7 +5,6 @@ import Logo from 'images/forkie.png';
 import background from 'images/background.jpg';
 import { styled } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { URL } from '../GlobalVariables';
 
 // Authentication Styled Components
 const SubmitButton = styled(Button)({
@@ -114,7 +113,7 @@ class SignUp extends React.Component {
             }
 
             axios
-                .post(`${URL}/api/v1/registrations`, new_user, { withCredentials: true })
+                .post(`/api/v1/registrations`, new_user, { withCredentials: true })
                 .then(response => {
                     if (response.data.status === 'created') {
                         let user_data = response.data

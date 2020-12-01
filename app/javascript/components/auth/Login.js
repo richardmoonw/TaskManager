@@ -5,7 +5,6 @@ import Logo from 'images/forkie.png';
 import axios from 'axios';
 import background from 'images/background.jpg';
 import { styled } from '@material-ui/core/styles';
-import { URL } from '../GlobalVariables';
 
 // Styled Components
 const SubmitButton = styled(Button)({
@@ -112,7 +111,7 @@ class Login extends React.Component {
 		}
 		
 		axios
-		.post(`${URL}/api/v1/sessions`, new_session, { withCredentials: true })
+		.post(`/api/v1/sessions`, new_session, { withCredentials: true })
 		.then(response => {
 			if (response.data.logged_in === true) {
 			this.setState({
