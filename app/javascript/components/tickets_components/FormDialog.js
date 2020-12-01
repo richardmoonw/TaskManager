@@ -1,30 +1,63 @@
-import React,{useState} from 'react'
-import { Dialog, DialogContent } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button'
-import axios from 'axios'
-import DropMenu from './DropMenu'
-const useStyles = makeStyles({
-    bottom_field: {
-        marginTop: '10px',
-        width: '98%'
-    },
-    popup: {
-        minHeight: '80vh'
-    },
-    title: {
-        width: '98%'
-    },
-    description: {
-        width: '98%'
-    },
-    extras: {
-        paddingLeft: '14px'
-    }
+import React, { useState } from 'react'
+import { Dialog, DialogContent, Button, Grid, IconButton, TextField,
+    DialogTitle, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { styled } from '@material-ui/core/styles';
+import axios from 'axios';
+import DropMenu from './DropMenu';
 
+// Styled Components
+const FormattedTextField = styled(TextField)({
+    width: '100%',
+    marginBottom: '1rem'
 });
+
+const TitleContainer = styled(DialogTitle)({
+    textAlign: "center",
+    padding: "1.5rem 0 1.5rem 0",
+    borderBottom: "0.1rem solid lightgray"
+});
+
+const TitleIcon = styled(AddCircleOutlineOutlinedIcon)({
+    color: "#fc7272"
+});
+
+const Title = styled(Typography)({
+    fontSize: "2rem",
+    fontFamily: "Arial",
+    color: "#fc7272"
+});
+
+const ButtonContainer = styled(Grid)({
+    textAlign: "center"
+});
+
+const FormattedDialogContent = styled(DialogContent)({
+    backgroundColor: "#f9f9f9"
+});
+
+const SidePanel = styled(Grid)({
+    paddingRight: "1rem",
+    boxSizing: "border-box"
+})
+
+const InfoText = styled(Typography)({
+    margin: "1.2rem 0 1rem 0",
+    fontSize: "1rem",
+    fontWeight: "bold"
+});
+
+const OptionButton = styled(Button)({
+    margin: "1rem 0 2rem 0",
+    width: "90%",
+    heigth: "1.5rem"
+});
+
+const FormattedDropMenu = styled(DropMenu)({
+    width: "100%"
+});
+
 const priorityItems = [
     {
         id: 1,
@@ -59,8 +92,8 @@ const statusItems = [
     },
 ]
 
+// Function used to render the New Ticket Component.
 export default function FormDialog(props) {
-    const classes = useStyles();
     const { open, setOpen } = props;
     const [priority, setPriority] = useState(priorityItems[0])
     const [assignee, setAssignee] = useState([])
@@ -81,8 +114,9 @@ export default function FormDialog(props) {
     const changeStatus = (value) =>{
         setStatus(value)
     }
+
+    // Function used to create a new ticket in the server.
     const post = () =>{
-        
         var repo = null
         var ass = null
         if(reporter.length != 0){
@@ -109,8 +143,6 @@ export default function FormDialog(props) {
             project_id: props.project_id
         }
         
-       
-        
         axios.post('/api/v1/tickets',new_data)
         .then(function(response) {
             // console.log(response)
@@ -118,67 +150,99 @@ export default function FormDialog(props) {
         })
         .catch(resp=> console.log(resp))
     }
+
+    // Function used to close the dialog.
     const close = () =>{
         setOpen(false)
         setTitle('')
         setDescription('')
     }
+
     return (
-        <Dialog open={open} maxWidth='md' fullWidth={true} className={classes.popup}>
-
-            <DialogContent className={classes.popup}>
-                <Grid item container xs={12} justify='flex-end' >
-                    <Button onClick={close}>
-                        X
-                        </Button>
+        <Dialog open={open} onClose={close} maxWidth='md' fullWidth={true}>
+            {/* Dialog Header */}
+            <TitleContainer>
+                <Grid container>
+                    <Grid item xs={11}></Grid>
+                    <ButtonContainer item xs={1}>
+                        <IconButton onClick={close}>
+                            <CloseIcon />
+                        </IconButton>
+                    </ButtonContainer>
                 </Grid>
-                <Grid container direction='row' className={classes.popup}>
-                    <Grid item container md={7} xs={12} direction='column'>
-                        <Grid item className={classes.title} >
-                            <TextField
-                                className={classes.title}
-                                id="title"
-                                label="Title"
-                                variant="outlined"
-                                inputProps={{ maxLength: 120 }}
-                                multiline
-                                rowsMax={2}
-                                value={title}
-                                onChange={(e)=> setTitle(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item className={classes.bottom_field} >
-
-
-
-                            <TextField
-                                className={classes.description}
-                                rows={22}
-                                id="Description"
-                                label="Description"
-                                variant="outlined"
-                                inputProps={{ maxLength: 5000 }}
-                                multiline
-                                rowsMax={22}
-
-                                value={description}
-                                onChange={(e)=> setDescription(e.target.value)}
-                            />
-                        </Grid>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <TitleIcon fontSize="large" />
                     </Grid>
-                    <Grid item container md={5} xs={12} className={classes.extras} direction='column'>
-                        <DropMenu title='Priority' items={priorityItems} current={1} setValue={changePriority}/>
-                        <DropMenu title='Assignee' items={props.employees} current={0} setValue={changeAssignee}/>
-                        <DropMenu title='Reporter' items={props.employees} current={0} setValue={changeReporter}/>
-                        <DropMenu title='Status' items={statusItems}current={1} setValue={changeStatus}/> 
-                            <Grid item >
-                                <Button variant='contained' color='primary' onClick={post}>
-                                    Save
-                                </Button>
+                    <Grid item xs={12}>
+                        <Title>Create Ticket</Title>     
+                    </Grid>
+                </Grid>
+            </TitleContainer>
+
+            {/* Dialog Body */}
+            <FormattedDialogContent>
+                <Grid container>
+                    {/* Ticket Name and Description */}
+                    <SidePanel item xs={6}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <InfoText>Ticket general information:</InfoText>
                             </Grid>
+                            <Grid item xs={12}>
+                                <FormattedTextField
+                                    id="title"
+                                    label="Type the ticket name"
+                                    variant="outlined"
+                                    inputProps={{ maxLength: 120 }}
+                                    value={title}
+                                    onChange={(e)=> setTitle(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormattedTextField
+                                    id="Description"
+                                    label="Description"
+                                    variant="outlined"
+                                    inputProps={{ maxLength: 120 }}
+                                    multiline
+                                    rows={2}
+                                    value={description}
+                                    onChange={(e)=> setDescription(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </SidePanel>
+                    <Grid item xs={6}>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <InfoText>Details:</InfoText>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Priority' items={priorityItems} current={1} setValue={changePriority}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Status' items={statusItems} current={1} setValue={changeStatus}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Assignee' items={props.employees} current={0} setValue={changeAssignee}/>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormattedDropMenu title='Reporter' items={props.employees} current={0} setValue={changeReporter} />
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </DialogContent>
+                <Grid container>
+                    <Grid item xs={2}></Grid>
+                    <ButtonContainer item xs={4}>
+                        <OptionButton variant='contained' color='secondary' onClick={post}>Create</OptionButton>
+                    </ButtonContainer>
+                    <ButtonContainer item xs={4}>
+                        <OptionButton variant='contained' onClick={close}>Maybe later</OptionButton>
+                    </ButtonContainer>
+                </Grid>
+            </FormattedDialogContent>
         </Dialog>
     )
 }

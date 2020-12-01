@@ -58,7 +58,7 @@ const OptionButton = styled(Button)({
 
 const FormattedDropMenu = styled(DropMenu)({
     width: "100%"
-})
+});
 
 
 const priorityItems = [
