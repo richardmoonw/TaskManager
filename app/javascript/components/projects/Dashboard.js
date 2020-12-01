@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar';
-import Projects from './Projects';
+import Projects from './Project';
 import { Grid } from '@material-ui/core';
 import axios from 'axios';
 import { styled } from '@material-ui/core/styles';
