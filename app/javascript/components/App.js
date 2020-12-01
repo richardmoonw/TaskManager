@@ -137,7 +137,7 @@ class App extends React.Component {
                         this.state.loggedInStatus === "LOGGED_IN"
                         ? <TicketsBoard {...props}
                             handleLogout={this.handleLogout}
-                            employee={this.state.employee.employee_id} 
+                            employee={this.state.employee} 
                         />
                         : <p>No authorized</p>
                     )}

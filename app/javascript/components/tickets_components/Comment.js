@@ -1,64 +1,66 @@
 import React from 'react';
-import { Grid, Button, TextField, Typography, Container } from '@material-ui/core';
+import { Grid, Button, TextField, Typography, IconButton } from '@material-ui/core';
 import ProfileImg from 'images/profile.png'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Create from '@material-ui/icons/Create';
+import SendIcon from '@material-ui/icons/Send';
 import { styled } from '@material-ui/styles';
 import axios from 'axios';
 
 const styles = {
 
     commentProfileImg: {
-        width: "50%",
+        width: "100%",
         borderRadius: '1000px'
-    },
-
-    commentTextField: {
-        width: "90%",
-        boxSizing: "border-box",
-        marginTop: "0.5rem",
-        padding: "0rem",
-        marginBottom: "1rem"
     }
 }
 
+// Styled Components
+const FormattedTextField = styled(TextField)({
+    width: '100%',
+    marginBottom: '1rem'
+});
+
 const CommentContainer = styled(Grid)({
-	paddingLeft: "1rem",
-	paddingTop: '1.5rem',
-	paddingBottom: '1.5rem',
+	width:"100%",
+	backgroundColor: "white",
 	boxSizing: "border-box",
-	borderBottom: "0.01rem dotted lightgray"
-})
+	margin: "0.5rem 0 0.5rem 1rem",
+	padding: "1rem",
+	borderRadius: "0.7rem"
+});
 
-const SaveButton = styled(Button)({
-    width: "80%",
-    backgroundColor: "#3bb1d1",
-    color: 'white',
-    borderRadius: "0.5rem"
-})
-
-const CommentTitle = styled(Container)({
-	marginTop: '0.5rem'
-})
+const ButtonContainer = styled(Grid)({
+    textAlign: "center"
+});
 
 const ImageContainer = styled(Grid)({
 	textAlign: "center"
+});
+
+const ProfileName = styled(Typography)({
+	color: "#000",
+	fontFamily: "Arial",
+	fontSize: '1rem',
+	marginLeft: '0.5rem',
+	fontWeight: "bold"
 })
 
 const Date = styled(Typography)({
 	color: "#888",
+	fontFamily: "Arial",
 	fontSize: '0.7rem',
 	marginLeft: '0.5rem'
+});
+
+const EditButtonsContainer = styled(Grid)({
+	textAlign: "right"
+});
+
+const CommentText = styled(Grid)({
+	marginTop: "1rem"
 })
 
-const CommentBody = styled(Grid)({
-	width:"100%",
-	backgroundColor: "white",
-	marginTop: "0.5rem",
-	marginRight: "0.5rem",
-	padding: "1rem",
-	borderRadius: "0.7rem"
-})
 
 class Comment extends React.Component {
 
@@ -90,6 +92,7 @@ class Comment extends React.Component {
 			})
 	}
 
+	// Function used to determine if a comment is being editted or not.
 	editComment(){
 		let old_state = { ...this.state }
 		this.setState({
@@ -97,17 +100,20 @@ class Comment extends React.Component {
 		})
 	}
 
+	// Function used to handle the changes in any of the TextFields.
 	handleChange(event){
 		this.setState({
 			[event.target.name]: event.target.value
 		})
 	}
 
+	// Function triggered when a comment is updated.
 	handleUpdate(){
 		this.props.updateComment(this.props.comment.id, this.state.comment)
 		this.editComment()
 	}
 
+	// Function triggered when a comment is deleted.
 	handleDelete(){
 		this.props.deleteComment(this.props.comment.id)
 	}
@@ -115,55 +121,59 @@ class Comment extends React.Component {
 	render() {
 		return (
 			<Grid container>
-				<CommentContainer item xs={10}>
+				<CommentContainer item xs={12}>
 					<Grid container>
 						<ImageContainer item xs={1}>
 							<img style={styles.commentProfileImg} alt={this.props.comment.employee_id} src={ProfileImg} />
 						</ImageContainer>
-						<Grid item xs={8}>
-							<CommentTitle>
-								<strong>{this.state.employee_name}</strong>
-								<Date>{this.props.comment.created_at}</Date>
-							</CommentTitle>
+						<Grid item xs={7}>
+							<Grid container>
+								<Grid item xs={12}>
+									<ProfileName>{this.state.employee_name}</ProfileName>
+								</Grid>
+								<Grid item xs={12}>
+									<Date>{this.props.comment.created_at}</Date>
+								</Grid>
+							</Grid>
 						</Grid>
 						{ this.state.editable && 
 							<>
-								<Grid item xs={3}>
-									<Button onClick={this.editComment}>
+								<EditButtonsContainer item xs={4}>
+									<IconButton onClick={this.editComment}>
 										<Create />
-									</Button>
-									<Button onClick={this.handleDelete}>
+									</IconButton>
+									<IconButton onClick={this.handleDelete}>
 										<DeleteIcon />
-									</Button>
-								</Grid>
+									</IconButton>
+								</EditButtonsContainer>
 							</>		
 						}
 					</Grid>
 					{ !this.state.isEditing && 
-						<Grid container>
-							<CommentBody item xs={12}>{this.props.comment.comment}</CommentBody>
-						</Grid>
+						<CommentText container>
+							<Grid item xs={12}>{this.props.comment.comment}</Grid>
+						</CommentText>
 					}
 					{ this.state.isEditing && 
 					<>
-						<Grid container>
-							<Grid item xs={12}>
-								<TextField
+						<CommentText container>
+							<Grid item xs={10}>
+								<FormattedTextField
 									onChange={this.handleChange}
-									label="Edit your comment"
+									label="Edit comment"
+									variant="outlined"
 									name="comment"
 									multiline
-									rows={3}
+									rows={2}
 									value={this.state.comment}
-									style={styles.commentTextField}
 								/>
 							</Grid>
-							<Grid item xs={3}>
-								<SaveButton 
-									onClick={this.handleUpdate}
-								>Save</SaveButton>
-							</Grid>
-						</Grid>
+							<EditButtonsContainer item xs={2}>
+								<IconButton onClick={this.handleUpdate}>
+									<SendIcon color="primary" />
+								</IconButton>
+							</EditButtonsContainer>
+						</CommentText>
 					</>
 					}
 					
