@@ -123,7 +123,7 @@ class SignUp extends React.Component {
                             user_id: user_data.user.id
                         }
                         axios
-                            .post(`${URL}/api/v1/employees`, new_employee, { withCredentials: true })
+                            .post(`/api/v1/employees`, new_employee, { withCredentials: true })
                             .then(response => {
                                 this.handleSuccessfulAuth(user_data.user.id);
                             })
