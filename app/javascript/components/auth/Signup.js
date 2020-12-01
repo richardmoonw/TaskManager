@@ -74,7 +74,7 @@ class SignUp extends React.Component {
                         axios
                             .post(`${URL}/api/v1/employees`, new_employee, { withCredentials: true })
                             .then(response => {
-                                this.handleSuccessfulAuth(user_data);
+                                this.handleSuccessfulAuth(user_data.user.id);
                             })
                             .catch(error => {
                                 switch(error.response.status) {
@@ -102,8 +102,8 @@ class SignUp extends React.Component {
         })
     }
 
-    handleSuccessfulAuth(data) {
-        this.props.handleLogin(data);
+    handleSuccessfulAuth(user_id) {
+        this.props.handleLogin(user_id);
         this.props.history.push("/profile");
     }
 

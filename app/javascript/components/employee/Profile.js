@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Paper, Tabs, Tab, Grid, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
 import { styles, ProjectsButton } from '../styles';
 import Logo from 'images/forkie.png';
@@ -15,10 +16,10 @@ class Profile extends React.Component {
 
 		this.state ={
 			editProfile: false,
-			id: "",
-			email: "",
-			name: "",
-			role: ""
+			id: '',
+			email: '',
+			name: '',
+			role: ''
 		}		
 
 		this.updateInfo = this.updateInfo.bind(this)
@@ -29,21 +30,19 @@ class Profile extends React.Component {
     }
     
     componentDidMount() {
-        // If the user is already logged in, redirect them to the profile screen.
-        if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
-            this.props.history.push("/");
-        } else {
-			axios.get(`${URL}/api/v1/users/${this.props.user.id}`, { withCredentials: true })
-				.then(response => {
-					let user_data = response.data
-					this.setState({
-						email: this.props.user.email,
-						id: user_data.employee.id,
-						name: user_data.employee.name,
-						role: user_data.employee.role
-					})
+		setTimeout(() => {
+			// If the user is already logged in, redirect them to the profile screen.
+			if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
+				this.props.history.push("/");
+			} else {
+				this.setState({
+					id: this.props.employee.id,
+					email: this.props.user.email,
+					name: this.props.employee.name,
+					role: this.props.employee.role
 				})
-		}
+			}
+		}, 1000)
     }
 
 	// Function used to handle the user information's updates.
@@ -69,7 +68,7 @@ class Profile extends React.Component {
 		})
 	}
 
-	handleLogout(event) {
+	handleLogout() {
 		axios
             .delete(`${URL}/api/v1/logout`, { withCredentials: true })
             .then(response => {
@@ -114,14 +113,16 @@ class Profile extends React.Component {
 							</Grid>
 							<Grid item xs={7}></Grid>
 							<Grid item xs={3} style={styles.contentCentered}>
-								<ProjectsButton
-									variant="contained"
-									color="primary"
-									startIcon={<AccountTree />}
-									style={styles.navbarButtons}
-								>
-									Projects
-								</ProjectsButton>
+								<Link style={styles.link} to="/projects">
+									<ProjectsButton
+										variant="contained"
+										color="primary"
+										startIcon={<AccountTree />}
+										style={styles.navbarButtons}
+									>
+										Projects
+									</ProjectsButton>
+								</Link>
 								<Button
 									variant="contained"
 									color="secondary"
