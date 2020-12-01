@@ -1,61 +1,57 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Ticket from '../tickets_components/Ticket'
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { styled } from '@material-ui/core/styles';
+import { Grid, Typography } from '@material-ui/core';
+import Ticket from '../tickets_components/Ticket';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
-import Typography from '@material-ui/core/Typography';
-const useStyles = makeStyles({
-    hi: {
-
-        background: '#ddd',
-        borderRadius: '10px',
-        paddingLeft: '10px',
-        paddingRight: '10px'
-
-    },
-    lo:{
-        paddingLeft:'10px',
-        paddingRight: '10px',
-        marginTop:'10px'
-    },
-    header:{
-        marginTop: '10px',
-        paddingLeft: '10px',
-        paddingBottom: '10px',
-    }
+// Styled Components
+const ColumnContainer = styled(Grid)({
+    padding: '1rem'
 });
 
+const ColumnTitle = styled(Typography)({
+    fontFamily: "Arial",
+    fontWeight: "bold",
+    paddingLeft: "2rem"
+});
+
+const HeaderContainer = styled(Grid)({
+    marginBottom: "1rem"
+});
+
+// Function used to return the Column Component.
 export default function Column(props) {
-    const classes = useStyles();
+    const ColumnIcon = styled(FiberManualRecordIcon)({
+        color: props.color,
+        float: "left"
+    })
     
     return (
-        <Grid md={3} xs={12}sm={6}className={classes.lo} item >
-            <Grid className={classes.hi}container>
-                <Grid item className={classes.header} xs={12} >
-                <Typography variant="subtitle1" >
-                {props.col_title} {props.tickets.length}        
-                </Typography>
-                    
-                </Grid>
+        <Grid item md={3} xs={12} sm={6}>
+            <ColumnContainer container>
+                {/* Column Title */}
+                <HeaderContainer item xs={12}>
+                    <ColumnIcon fontSize="small" />
+                    <ColumnTitle>{props.col_title}: {props.tickets.length}</ColumnTitle>    
+                </HeaderContainer>
+
+                {/* Tickets */}
                 <Grid item xs={12}>
-                {props.tickets.map(ticket => {
-                            return(
-                                <Ticket 
-                                    key={ticket.id} 
-                                    ticket={ticket} 
-                                    employees={props.employees} 
-                                    project_id={props.project_id}
-                                    flag ={props.flag}
-                                    setFlag={props.setFlag}
-                                    employee_id={props.employee_id}
-                                />
-                            )
-                        })}
-                    
+                    {props.tickets.map(ticket => {
+                        return(
+                            <Ticket 
+                                key={ticket.id} 
+                                ticket={ticket} 
+                                employees={props.employees} 
+                                project_id={props.project_id}
+                                flag ={props.flag}
+                                setFlag={props.setFlag}
+                                employee_id={props.employee_id}
+                            />
+                        )
+                    })} 
                 </Grid>
-            </Grid>
+            </ColumnContainer>
         </Grid>
-
-
     );
 }

@@ -1,24 +1,25 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router';
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-import Column from '../tickets_components/Column'
-import { makeStyles } from '@material-ui/core/styles';
-import FormDialog from '../tickets_components/FormDialog'
+import { Grid, Typography, IconButton } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import Column from './Column';
+import FormDialog from '../tickets_components/FormDialog';
 import Navbar from '../Navbar';
-import Typography from '@material-ui/core/Typography';
-import axios from 'axios'
-const useStyles = makeStyles(() => ({
+import axios from 'axios';
 
-    button_pad: {
-        paddingRight: '30px'
-    },
-    top_bar: {
-        marginTop: '20px',
-        marginBottom: '5px'
-    }
+// Styled components
+const BackgroundContainer = styled(Grid)({
+	backgroundColor: '#f5f5f5',
+	minHeight: "100vh",
+	height: "100%",
+	padding: "2rem 0 2rem 0"
+});
 
-}));
+const ButtonContainer = styled(Grid)({
+    textAlign: "center"
+});
+
 const null_employee = [
     {
       "id":0,
@@ -26,9 +27,8 @@ const null_employee = [
     }
   ]
 
-
+// Function used to render the TicketsBoard component.
 function TicketsBoard({ handleLogout, match, employee}) {
-    const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [project, setProject] = useState([]);
     const history = useHistory();
@@ -41,6 +41,8 @@ function TicketsBoard({ handleLogout, match, employee}) {
     const [employees, setEmployees] =useState([])
     const [flag, setFlag] = useState(false)
 
+    // Function used to retrieve all the project information before 
+    // loading the component.
     useEffect(() => {
         setTimeout(() => {
             const url = `/api/v1/projects/${project_id}`
@@ -56,9 +58,12 @@ function TicketsBoard({ handleLogout, match, employee}) {
                 
             })
             .catch(resp => console.log(resp))
-        }, 100)
+        }, 1000)
+
+        
     }, [flag])
 
+    // Function used to handle the logout of the application.
     const logout = () => {
 		axios
             .delete(`/api/v1/logout`, { withCredentials: true })
@@ -72,73 +77,84 @@ function TicketsBoard({ handleLogout, match, employee}) {
 	}
 
     return (
-
-        <Fragment>
+        <>
             <Navbar handleLogout={logout}/>
+            <BackgroundContainer container>
+                <Grid item xs={1}></Grid>
+                <Grid item xs={10}>
+                    {/* Top menu */}
+                    <Grid container>
+                        {
+                            loaded &&
+                            <Grid item xs={11}>
+                                <Typography variant="h3" >
+                                {project.name}        
+                                </Typography>
+                            </Grid>
+                        }
+                        <ButtonContainer item xs={1}>
+                            <IconButton onClick={() => setOpen(true)}>
+                                <AddIcon fontSize="large"/>
+                            </IconButton>
+                        </ButtonContainer>
+                    </Grid>
 
-            <Grid container className={classes.top_bar} direction='row' alignItems='center'>
-                <Grid container item md={6} xs={12} justify='center' direction='row'>
-                    {
-                        loaded &&
-                        <Grid item>
-                             <Typography variant="h3" >
-                             {project.name}        
-                             </Typography>
+                    {/* Columns */}
+                    {loaded &&
+                        <Grid container>
+
+                            {/* Backlog column */}
+                            <Column 
+                                col_title='Backlog'
+                                color="#969696"
+                                tickets={backlogTickets}  
+                                employees={employees}
+                                project_id={project_id}
+                                flag ={flag}
+                                setFlag={setFlag}
+                                employee_id={employee.id}
+                            ></Column>
+
+                            {/* Dev column */}
+                            <Column 
+                                col_title='Selected for development' 
+                                color="#8c8eff"
+                                tickets={devTickets} 
+                                employees={employees} 
+                                project_id={project_id}
+                                flag ={flag}
+                                setFlag={setFlag}
+                                employee_id={employee.id}
+                            ></Column>
+
+                            {/* In progress column */}
+                            <Column 
+                                col_title='In progress' 
+                                color="#ff8c90"
+                                tickets={progressTickets} 
+                                employees={employees}
+                                project_id={project_id}
+                                flag ={flag}
+                                setFlag={setFlag}
+                                employee_id={employee.id}
+                            ></Column>
+
+                            {/* Done column */}
+                            <Column 
+                                col_title='Done' 
+                                color="#63db81"
+                                tickets={doneTickets} 
+                                employees={employees}
+                                project_id={project_id}
+                                flag ={flag}
+                                setFlag={setFlag}
+                                employee_id={employee.id}
+                            ></Column>
                         </Grid>
                     }
-
                 </Grid>
-                <Grid container item md={6} xs={12} direction='row' justify='flex-end'>
-                    <Grid item className={classes.button_pad}>
-                        <Button variant='contained' color='primary' onClick={() => setOpen(true)}>
-                            New ticket
-                        </Button>
-                    </Grid>
-                </Grid>
-
-            </Grid>
-
-
-            {loaded &&
-                <Grid container direction='row' justify="center" >
-                    <Column 
-                        col_title='Backlog' 
-                        tickets={backlogTickets}  
-                        employees={employees}
-                        project_id={project_id}
-                        flag ={flag}
-                        setFlag={setFlag}
-                        employee_id={employee}
-                    ></Column>
-                    <Column 
-                        col_title='Selected for development' 
-                        tickets={devTickets} 
-                        employees={employees} 
-                        project_id={project_id}
-                        flag ={flag}
-                        setFlag={setFlag}
-                        employee_id={employee}
-                    ></Column>
-                    <Column 
-                        col_title='In progress' 
-                        tickets={progressTickets} 
-                        employees={employees}
-                        project_id={project_id}
-                        flag ={flag}
-                        setFlag={setFlag}
-                        employee_id={employee}
-                    ></Column>
-                    <Column 
-                        col_title='Done' 
-                        tickets={doneTickets} 
-                        employees={employees}
-                        project_id={project_id}
-                        flag ={flag}
-                        setFlag={setFlag}
-                        employee_id={employee}
-                    ></Column>
-                </Grid>
-            }
+            </BackgroundContainer>
+            
 
             <FormDialog
                 open={open}
@@ -147,10 +163,8 @@ function TicketsBoard({ handleLogout, match, employee}) {
                 project_id = {project_id}
                 flag ={flag}
                 setFlag={setFlag}
-            >
-
-            </FormDialog>
-        </Fragment>
+            ></FormDialog>
+        </>
     );
 }
 
