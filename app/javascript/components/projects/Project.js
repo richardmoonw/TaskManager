@@ -170,7 +170,7 @@ function Projects() {
                                     </Card>  
                                 </Grid>
                             ))}
-                        </Grid>
+                        </Grid>   
                 }
             </Container>
         </>
