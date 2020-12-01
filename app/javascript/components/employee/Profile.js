@@ -192,7 +192,7 @@ class Profile extends React.Component {
 			name: this.state.name,
 			role: this.state.role
 		}
-		axios.put(`${URL}/api/v1/employees/${this.state.id}`, updated_employee, { withCredentials: true })
+		axios.put(`/api/v1/employees/${this.state.id}`, updated_employee, { withCredentials: true })
 			.then(response => {
 				return;
 			})
