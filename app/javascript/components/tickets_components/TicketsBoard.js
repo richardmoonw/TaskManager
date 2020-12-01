@@ -25,7 +25,7 @@ const null_employee = [
   ]
 
 
-function TicketsBoard({match}) {
+function TicketsBoard({match, employee}) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [project, setProject] = useState([])
@@ -39,8 +39,10 @@ function TicketsBoard({match}) {
     const [flag, setFlag] = useState(false)
 
     useEffect(() => {
-        const url = `/api/v1/projects/${project_id}`
-        axios.get(url)
+        setTimeout(() => {
+            console.log(match)
+            const url = `/api/v1/projects/${project_id}`
+            axios.get(url)
             .then(function (response) {
                 setProject(response.data)
                 setEmployees(null_employee.concat(response.data.employees))
@@ -52,6 +54,7 @@ function TicketsBoard({match}) {
                 
             })
             .catch(resp => console.log(resp))
+        }, 100)
     }, [flag])
 
     return (
@@ -90,7 +93,7 @@ function TicketsBoard({match}) {
                         project_id={project_id}
                         flag ={flag}
                         setFlag={setFlag}
-                        employee_id={6}
+                        employee_id={employee}
                     ></Column>
                     <Column 
                         col_title='Selected for development' 
@@ -99,7 +102,7 @@ function TicketsBoard({match}) {
                         project_id={project_id}
                         flag ={flag}
                         setFlag={setFlag}
-                        employee_id={6}
+                        employee_id={employee}
                     ></Column>
                     <Column 
                         col_title='In progress' 
@@ -108,7 +111,7 @@ function TicketsBoard({match}) {
                         project_id={project_id}
                         flag ={flag}
                         setFlag={setFlag}
-                        employee_id={6}
+                        employee_id={employee}
                     ></Column>
                     <Column 
                         col_title='Done' 
@@ -117,7 +120,7 @@ function TicketsBoard({match}) {
                         project_id={project_id}
                         flag ={flag}
                         setFlag={setFlag}
-                        employee_id={6}
+                        employee_id={employee}
                     ></Column>
                 </Grid>
             }

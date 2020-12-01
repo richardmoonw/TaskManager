@@ -30,14 +30,17 @@ class App extends React.Component {
     }
 
     checkLoginStatus() {
-        axios
-            .get(`${URL}/api/v1/logged_in`, { withCredentials: true })
+        axios.get(`${URL}/api/v1/logged_in`, { withCredentials: true })
             .then(response => {
                 if (response.data.logged_in === true && this.state.loggedInStatus === 'NOT_LOGGED_IN') {
-                    this.setState({
-                        loggedInStatus: 'LOGGED_IN',
-                        user: response.data.user
-                    })
+                    axios.get(`/api/v1/users/${response.data.user.id}`, { withCredentials: true })
+                        .then(response => {
+                            this.setState({
+                                loggedInStatus: 'LOGGED_IN',
+                                user: response.data,
+                                employee: response.data.employee
+                            })
+                        })
                 } else if (response.data.logged_in === false && this.state.loggedInStatus === 'LOGGED_IN') {
                     this.setState({
                         loggedInStatus: 'NOT_LOGGED_IN',
@@ -66,8 +69,6 @@ class App extends React.Component {
             .catch(error => {
                 console.log("There was an error retrieving the user data");
             })
-            console.log(this.state.user)
-            console.log(this.state.employee)
     }
 
     // Change the state status once a user has logged out.
@@ -134,8 +135,10 @@ class App extends React.Component {
                     path='/ticketsboard/:id'
                     render={props =>(     
                         <TicketsBoard {...props}
-                        loggedInStatus={this.state.loggedInStatus}
-                        handleLogout={this.handleLogout} />
+                            loggedInStatus={this.state.loggedInStatus}
+                            handleLogout={this.handleLogout}
+                            employee={this.state.employee.employee_id} 
+                        />
                     )}
                 />
 

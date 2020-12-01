@@ -30,17 +30,19 @@ class Profile extends React.Component {
     }
     
     componentDidMount() {
-        // If the user is already logged in, redirect them to the profile screen.
-        if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
-            this.props.history.push("/");
-        } else {
-			this.setState({
-				id: this.props.employee.id,
-				email: this.props.user.email,
-				name: this.props.employee.name,
-				role: this.props.employee.role
-			})
-		}
+		setTimeout(() => {
+			// If the user is already logged in, redirect them to the profile screen.
+			if (this.props.loggedInStatus === 'NOT_LOGGED_IN') {
+				this.props.history.push("/");
+			} else {
+				this.setState({
+					id: this.props.employee.id,
+					email: this.props.user.email,
+					name: this.props.employee.name,
+					role: this.props.employee.role
+				})
+			}
+		}, 1000)
     }
 
 	// Function used to handle the user information's updates.
