@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Grid, TextField, Button, Typography } from '@material-ui/core';
 import Logo from 'images/forkie.png';
 import axios from 'axios';

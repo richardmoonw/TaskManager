@@ -47,7 +47,7 @@ const ContainerText = styled(Typography)({
 	marginTop: '1.2rem'
 });
 
-function Projects() {
+function Projects({ employee }) {
     const [projects, setProjects] = useState([])
     const [loaded, setLoaded] = useState(false)
     const [openNew, setOpenNew] = useState(false)
@@ -56,10 +56,10 @@ function Projects() {
     const [project, setProject] = useState({})
 
     useEffect(() => {
-        const url = '/api/v1/projects/'
+        const url = `/api/v1/employees/${employee.id}`
         axios.get(url)
             .then(function (response) {
-                var temp = response.data
+                var temp = response.data.projects
                 temp.sort(function(a, b) {
                     var textA = a.name.toUpperCase();
                     var textB = b.name.toUpperCase();
@@ -118,11 +118,13 @@ function Projects() {
                             </Grid>
                         </ProfileContainer>
                     </Grid>
-                    <ButtonContainer item xs={1}>
-                        <IconButton onClick={() => setOpenNew(true)}>
-                            <AddIcon fontSize="large"/>
-                        </IconButton>
-                    </ButtonContainer>
+                    { employee.role === "Project Manager" &&
+                        <ButtonContainer item xs={1}>
+                            <IconButton onClick={() => setOpenNew(true)}>
+                                <AddIcon fontSize="large"/>
+                            </IconButton>
+                        </ButtonContainer>
+                    }
                 </Grid>
 
                 {
@@ -155,18 +157,20 @@ function Projects() {
                                                 </PersonalizedCardContent>
                                             </FormattedLink>
                                         </CardActionArea>
-                                        <CardActions>
-                                            <Button 
-                                                size="small" 
-                                                color="primary"
-                                                onClick={()=>editPressed(project.id)}
-                                            >Edit</Button>
-                                            <Button 
-                                                size="small" 
-                                                color="primary"
-                                                onClick={()=>deletePressed(project.id)}
-                                            >Delete</Button>
-                                        </CardActions>
+                                        { employee.role === "Project Manager" &&
+                                            <CardActions>
+                                                <Button 
+                                                    size="small" 
+                                                    color="primary"
+                                                    onClick={()=>editPressed(project.id)}
+                                                >Edit</Button>
+                                                <Button 
+                                                    size="small" 
+                                                    color="primary"
+                                                    onClick={()=>deletePressed(project.id)}
+                                                >Delete</Button>
+                                            </CardActions>
+                                        }
                                     </Card>  
                                 </Grid>
                             ))}

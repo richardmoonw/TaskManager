@@ -30,10 +30,6 @@ const CommentContainer = styled(Grid)({
 	borderRadius: "0.7rem"
 });
 
-const ButtonContainer = styled(Grid)({
-    textAlign: "center"
-});
-
 const ImageContainer = styled(Grid)({
 	textAlign: "center"
 });
@@ -58,7 +54,8 @@ const EditButtonsContainer = styled(Grid)({
 });
 
 const CommentText = styled(Grid)({
-	marginTop: "1rem"
+	marginTop: "1rem",
+	fontFamily: "Arial"
 })
 
 

@@ -148,7 +148,7 @@ class Profile extends React.Component {
 				name: this.props.employee.name,
 				role: this.props.employee.role
 			})
-		}, 1000)
+		}, 1500)
     }
 
 	// Function used to handle the user information's updates.
@@ -187,6 +187,7 @@ class Profile extends React.Component {
             })   
 	}
 
+	// Function used to update the employee information
 	handleSubmit() {
 		let updated_employee = {
 			name: this.state.name,
@@ -194,7 +195,7 @@ class Profile extends React.Component {
 		}
 		axios.put(`/api/v1/employees/${this.state.id}`, updated_employee, { withCredentials: true })
 			.then(response => {
-				return;
+				this.props.handleUpdate();
 			})
 			.catch(error => {
 				console.log("There was an error updating the info")
