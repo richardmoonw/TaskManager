@@ -65,19 +65,19 @@ resolved_paths: ['app/assets', 'engine/foo/app/assets']
 ### Accounts:
 In this section you can find the credentials to access to the application.
 
-*Employee 1:
+* Employee 1:
 mario.andres@hotmail.com
 UserPass123
 
-*Employee 2:
+* Employee 2:
 ricardo@hotmail.com
 UserPass2
 
-*Employee 3:
+* Employee 3:
 cindyt@hotmail.com
 UserPass123
 
-*Project Manager:
+* Project Manager:
 danv@hey.com
 MyPassword123
 
