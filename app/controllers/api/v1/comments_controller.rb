@@ -1,6 +1,8 @@
 module Api
     module V1
         class CommentsController < ApplicationController
+            include CurrentUserConcern
+            before_action :require_login
             protect_from_forgery with: :null_session
             before_action :find_comment, only: [:show, :update, :destroy]
             def index
@@ -42,6 +44,11 @@ module Api
             end
             def find_comment
                 @comment = Comment.find(params[:id])
+            end
+            def require_login
+                unless @current_user
+                    return head 401
+                end
             end
         end
     end

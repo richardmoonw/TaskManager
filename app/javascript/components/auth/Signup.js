@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, TextField, Button, Typography } from '@material-ui/core';
+import { Grid, TextField, Button, Typography, InputLabel,
+    Select, MenuItem, Input } from '@material-ui/core';
 import axios from 'axios';
 import Logo from 'images/forkie.png';
 import background from 'images/background.jpg';
@@ -27,7 +28,7 @@ const BackgroundContainer = styled(Grid)({
 });
 
 const FormContainer = styled(Grid)({
-	marginTop: "13rem"
+	marginTop: "10rem"
 });
 
 const Title = styled(Typography)({
@@ -57,6 +58,16 @@ const FormattedLink = styled(Link)({
 	textDecoration: "none"
 });
 
+const RoleLabel = styled(InputLabel)({
+    fontSize: "0.7rem"
+});
+
+const RoleSelect = styled(Select)({
+    paddingLeft: "1rem",
+    width: "100%",
+    marginBottom: "1.2rem"
+});
+
 class SignUp extends React.Component {
 
     constructor(props) {
@@ -69,7 +80,9 @@ class SignUp extends React.Component {
             email_invalid: false,
             password_invalid: false,
             email_err: "",
-            password_err: ""
+            password_err: "",
+            name: "",
+            role: ""
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -118,8 +131,8 @@ class SignUp extends React.Component {
                     if (response.data.status === 'created') {
                         let user_data = response.data
                         let new_employee = {
-                            name: "",
-                            role: "",
+                            name: this.state.name,
+                            role: this.state.role,
                             user_id: user_data.user.id
                         }
                         axios
@@ -225,6 +238,7 @@ class SignUp extends React.Component {
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
                             <Grid item xs={6}>
                                 <InputText
+                                    required
                                     error={this.state.email_invalid}
                                     helperText={this.state.email_invalid && this.state.email_err}
                                     name="email"
@@ -236,6 +250,30 @@ class SignUp extends React.Component {
                             </Grid>
                             <Grid item xs={6}>
                                 <InputText
+                                    required
+                                    name="name"
+                                    label="Enter your name" 
+                                    variant="outlined"
+                                    value={this.state.name}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <RoleLabel id="role">Select your role:</RoleLabel>
+                                <RoleSelect
+                                    required
+                                    labelId="role"
+                                    name="role"
+                                    value={this.state.role}
+                                    onChange={this.handleChange}
+                                >
+                                    <MenuItem value={"Project Manager"}>Project Manager</MenuItem>
+                                    <MenuItem value={"Employee"}>Employee</MenuItem>
+                                </RoleSelect>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <InputText
+                                    required
                                     error={this.state.password_invalid}
                                     helperText={this.state.password_invalid && this.state.password_err}
                                     name="password"
@@ -248,6 +286,7 @@ class SignUp extends React.Component {
                             </Grid>
                             <Grid item xs={6}>
                                 <InputText
+                                    required
                                     error={this.state.password_invalid}
                                     helperText={this.state.password_invalid && this.state.password_err}
                                     name="password_confirmation"

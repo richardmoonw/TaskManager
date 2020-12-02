@@ -105,28 +105,28 @@ class Home extends React.Component {
                     {/* Brand container */}
                     <Grid item xs={6}>
 
-                    {/* Top Panel: Logo */}
-                    <TopPanel item xs={3}>
-                        <img alt="logo" width="100%" src={Logo}></img>
-                    </TopPanel>
+                        {/* Top Panel: Logo */}
+                        <TopPanel item xs={3}>
+                            <img alt="logo" width="100%" src={Logo}></img>
+                        </TopPanel>
 
-                    {/* Slogan and description */}
-                    <Grid container>
-                        <Grid item xs={1}></Grid>
-                        <HomeContainer item xs={7}>
-                            <Title>Smart Communication, Smart Brands</Title>
-                            <Description>Forkie is an incredible easy, flexible, visual and free solution 
-                                                                to manage your projects and organize all their elements in a single 
-                                                                place. Millions of people around the world trust in us.</Description>
-                            <Grid container>
-                                <Grid item xs={5}>
-                                    <FormattedLink to='/signup'>
-                                        <SignUpButton><strong>Get Started</strong></SignUpButton>
-                                    </FormattedLink>
+                        {/* Slogan and description */}
+                        <Grid container>
+                            <Grid item xs={1}></Grid>
+                            <HomeContainer item xs={7}>
+                                <Title>Smart Communication, Smart Brands</Title>
+                                <Description>Forkie is an incredible easy, flexible, visual and free solution 
+                                                                    to manage your projects and organize all their elements in a single 
+                                                                    place. Millions of people around the world trust in us.</Description>
+                                <Grid container>
+                                    <Grid item xs={5}>
+                                        <FormattedLink to='/signup'>
+                                            <SignUpButton><strong>Get Started</strong></SignUpButton>
+                                        </FormattedLink>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </HomeContainer>
-                    </Grid>
+                            </HomeContainer>
+                        </Grid>
                     </Grid>
 
                     {/* Empty space */}

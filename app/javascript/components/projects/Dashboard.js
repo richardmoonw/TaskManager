@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
 			<>
 				<Navbar handleLogout={this.handleLogout}/>
 				<BackgroundContainer container>
-					<Projects/>
+					<Projects employee={this.props.employee}/>
 				</BackgroundContainer>
 			</>
 	  	);

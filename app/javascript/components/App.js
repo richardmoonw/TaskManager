@@ -1,7 +1,8 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Home from './Home';
+import NotFound from './NotFound';
 import Login from './auth/Login';
 import SignUp from './auth/Signup';
 import Dashboard from './projects/Dashboard';
@@ -21,6 +22,7 @@ class App extends React.Component {
 
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     componentDidMount() {
@@ -79,6 +81,20 @@ class App extends React.Component {
         })
     }
 
+    // Change the state if the user updates their information.
+    handleUpdate() {
+        axios.get(`/api/v1/users/${this.state.user.id}`, { withCredentials: true })
+            .then(response => {
+                this.setState({
+                    user: response.data,
+                    employee: response.data.employee
+                })
+            })
+            .catch(error => {
+                console.log("There was an error updating your information");
+            })
+    }
+
     render() {
         return(
             <Switch>
@@ -123,9 +139,11 @@ class App extends React.Component {
                         this.state.loggedInStatus === "LOGGED_IN"
                         ? <Profile {...props}
                             handleLogout={this.handleLogout}
+                            handleUpdate={this.handleUpdate}
                             user={this.state.user}
                             employee={this.state.employee} />
-                        : <p>No authorized</p>
+                        : <NotFound />
+                       
                     )} 
                 />
 
@@ -139,7 +157,7 @@ class App extends React.Component {
                             handleLogout={this.handleLogout}
                             employee={this.state.employee} 
                         />
-                        : <p>No authorized</p>
+                        : <NotFound />
                     )}
                 />
 
@@ -150,8 +168,17 @@ class App extends React.Component {
                     render={props =>(   
                         this.state.loggedInStatus === "LOGGED_IN"  
                         ? <Dashboard {...props}
-                            handleLogout={this.handleLogout} />
-                        : <p>No authorized</p>
+                            handleLogout={this.handleLogout}
+                            employee={this.state.employee} />
+                        : <NotFound />
+                    )}
+                />
+                
+                {/* Any other page */}
+                <Route 
+                    path="/"
+                    render={() => (
+                        <NotFound />
                     )}
                 />
                 
