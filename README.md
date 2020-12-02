@@ -15,15 +15,14 @@ without the recommended software, but please be sure of what you do.
 3. Unix-like terminal.
 
 ### Steps:
-1. Open a terminal and clone the repository in your computer.
+1. Open a terminal, clone the repository and navigate to its root directory.
 ```bash
 git clone https://github.com/richardmoonw/TaskManager.git
-```
-
-2. Navigate to the root of the repository.
-```bash
 cd route_to_path
 ```
+
+2. Verify if the active variables for the database in config/database.yml are the ones for 
+development.
 
 3. If it is your first time building and running the application type the following (if not, go ahead with the
 next step).
@@ -47,7 +46,7 @@ docker container ls
 docker exec -ti <CONTAINER_ID> bash
 ```
 
-7. Once you are in the container terminal. Execute the following. **NOTE:** In case any of the packets ask you to 
+7. Once you are in the container terminal. Execute the following. **NOTE:** In case you are asked to 
 overwrite something, just confirm.
 ```bash
 rails db:migrate RAILS_ENV=development
@@ -61,4 +60,26 @@ rails generate react:install
 resolved_paths: ['app/assets', 'engine/foo/app/assets']
 ```
 
+9. Open the app in your browser and enjoy :)
+
 ### Accounts:
+In this section you can find the credentials to access to the application.
+
+*Employee 1:
+mario.andres@hotmail.com
+UserPass123
+
+*Employee 2:
+ricardo@hotmail.com
+UserPass2
+
+*Employee 3:
+cindyt@hotmail.com
+UserPass123
+
+*Project Manager:
+danv@hey.com
+MyPassword123
+
+**NOTE:** The PM has some special privileges over the employees. They can create, delete and edit projects. 
+Nevertheless, all the users can change their role in the profile screen.
