@@ -203,7 +203,7 @@ export default function NewProjectDialog(props) {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <Grid item xs={12}>
-                                        <InfoText>Update members (at least 1 is required):</InfoText>
+                                        <InfoText>Update members (at least 2 are required [including you]):</InfoText>
                                     </Grid>
                                     <FormattedFormGroup>
                                         <Grid container>

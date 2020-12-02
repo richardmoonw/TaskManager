@@ -174,7 +174,7 @@ export default function NewProjectDialog(props) {
                             <Grid item xs={6}>
                                 <Grid container>
                                     <Grid item xs={12}>
-                                        <InfoText>Add members (at least 1 is required):</InfoText>
+                                        <InfoText>Add members (at least 2 are required [including you]):</InfoText>
                                     </Grid>
                                     <FormGroup style={{width: "100%"}}>
                                         <Grid container>
